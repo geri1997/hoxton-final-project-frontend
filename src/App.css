@@ -1,42 +1,39 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap");
 
 button {
-  font-size: calc(10px + 2vmin);
+    cursor: pointer;
+}
+
+i {
+    cursor: pointer;
+}
+
+.loading-wrapper {
+    display: grid;
+    place-items: center;
+    height: 100vh;
+    z-index: 1;
+    background-color: #fff;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    font-size: 12px;
+    overflow-x: hidden; /* removes scroll in bottom */
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+a {
+    transition: 1s;
+    color: #111111;
+    outline: none;
+    text-decoration: none;
+}
+
+li {
+    list-style: none;
 }

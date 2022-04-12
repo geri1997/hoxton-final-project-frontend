@@ -1,45 +1,107 @@
-import { useState } from 'react'
-import logo from './logo.svg'
+// #region "Importing"
+import HomePage from './Pages/Home/HomePage'
+import MoviePage from './Pages/Movie/MoviePage'
+import LoginPage from './Pages/Login/LoginPage'
+import RegisterPage from './Pages/Register/RegisterPage'
+import GenrePage from './Pages/Genre/GenrePage'
+import ProfilePage from './Pages/Profile/ProfilePage'
+import ErrorPage from './Pages/Error/ErrorPage'
+
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom"
+
 import './App.css'
+import { useStore } from './Zustand/store'
+// #endregion
 
 function App() {
-  const [count, setCount] = useState(0)
+
+  const { setUser } = useStore()
+
+  function validateUser() {
+
+    if (localStorage.token) {
+
+      fetch("http://localhost:4000/validate", {
+        headers: {
+          Authorization: localStorage.token,
+        },
+      })
+        .then((resp) => resp.json())
+        .then((data) => {
+
+          if (data.error) {
+            console.log("Validation failed.");
+          } 
+          
+          
+          else {
+            setUser(data);
+          }
+
+      });
+
+    }
+
+  }
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Hello Vite + React!</p>
-        <p>
-          <button type="button" onClick={() => setCount((count) => count + 1)}>
-            count is: {count}
-          </button>
-        </p>
-        <p>
-          Edit <code>App.tsx</code> and save to test HMR updates.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          {' | '}
-          <a
-            className="App-link"
-            href="https://vitejs.dev/guide/features.html"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Vite Docs
-          </a>
-        </p>
-      </header>
-    </div>
+
+    <>
+
+        <Routes>
+
+            <Route index element={<Navigate replace to="/welcome" />} />
+
+            <Route path="/home" element={
+                //@ts-ignore
+                <HomePage validateUser = {validateUser} />} 
+            />
+
+            <Route path="/videos/:id" element={
+                //@ts-ignore
+                <MoviePage validateUser = {validateUser} />} 
+            />
+
+            <Route path="/users/:id" element={
+                //@ts-ignore
+                <ProfilePage validateUser = {validateUser} />} 
+            />
+
+            <Route path="/login" element={
+                <LoginPage 
+                    //@ts-ignore
+                    validateUser = {validateUser}
+                />} 
+            />
+
+            <Route path="/register" element={
+                <RegisterPage 
+                //@ts-ignore
+                    validateUser = {validateUser}
+                />} 
+            />
+
+            <Route path="/genres/:name" element={
+                //@ts-ignore
+                <GenrePage validateUser = {validateUser} />} 
+            />
+
+            <Route path="*" element={
+                //@ts-ignore
+                <ErrorPage validateUser = {validateUser} />} 
+            />
+
+        </Routes>
+
+    </>
+
   )
+
 }
 
 export default App
