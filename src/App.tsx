@@ -55,7 +55,7 @@ function App() {
 
         <Routes>
 
-            <Route index element={<Navigate replace to="/welcome" />} />
+            <Route index element={<Navigate replace to="/home" />} />
 
             <Route path="/home" element={
                 //@ts-ignore

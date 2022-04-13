@@ -1,9 +1,108 @@
-.header-welcome {
+header.header {
+    grid-area: header;
+    
+    width: 100%;
     display: grid;
-    grid-template-columns: 0.5fr 0.5fr;
-    grid-gap: 20px;
-    background-color: #fb7145;
-    height: 70px;
+    grid-template: 
+    "header-group-1 header-group-2" 100px /
+    0.8fr 0.2fr; /* this is where the bug was wich cause header problems, i had all three at 1fr 1fr 1fr but when i tried auto in the last part all went perfect when responsive*/
+    background-color: #004355;
+    grid-gap: 15px;
+    place-items: center;
+}
+
+header.header .header-group-1 {
+  grid-area: header-group-1;
+  display: grid;
+  grid-template-columns: 0.3fr 0.7fr;
+  grid-gap: 20px;
+  place-items: center;
+  /* padding-left: 50px; */
+}
+
+header.header .header-group-1 a {
+  font-size: 26px;
+  letter-spacing: 1px;
+  font-weight: 700;
+  color: #b61e1e;
+}
+
+header.header .header-group-1 ul {
+  display: grid;
+  grid-template-columns: repeat(4, 0.25fr);
+  grid-gap: 15px;
+  place-items: center;
+}
+
+header.header .header-group-1 ul li {
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  text-transform: uppercase;
+  font-family: Roboto;
+  cursor: pointer;
+  padding-bottom: 1px;
+
+}
+
+header.header .header-group-1 ul li:hover {
+  transition: 0.5s;
+  -webkit-transition: 0.5s;
+  -moz-transition: 0.5s;
+  -ms-transition: 0.5s;
+  -o-transition: 0.5s;
+  border-bottom: 1px solid #f7eeee52;
+  color: #b61e1e;
+}
+
+header.header .header-group-2 {
+  grid-area: header-group-2;
+  display: grid;
+  grid-template-columns: 0.8fr 150px;
+  grid-gap: 30px;
+  place-items: center;
+}
+
+.button-login-header {
+  font-size: 16px;
+  font-weight: 700;
+  padding: 10px 10px;
+  border: none;
+  outline: none;
+  background-color: #b61e1e;
+
+  display: grid;
+  grid-template-columns: 30px 80px;
+  place-items: center;
+}
+
+.button-login-header:hover {
+  background-color: #3684f1;
+  transition: 1s;
+  -webkit-transition: 1s;
+  -moz-transition: 1s;
+  -ms-transition: 1s;
+  -o-transition: 1s;
+}
+
+.button-search {
+  display: grid;
+  grid-template-columns: 1fr 0.1fr;
+  width: 100%;
+}
+
+.button-search button {
+  font-size: 16px;
+  font-weight: 700;
+  padding: 15px 15px;
+  border: none;
+  outline: none;
+  background-color: #b61e1e;
+}
+
+.button-search button:hover {
+  background-color: #3684f1;
+  transition: 1s;
 }
 
 /* Dropdown Button */
@@ -81,45 +180,7 @@
     display: block;
   }
 
-.header-welcome .header-group-1 span.special-logo {
-    font-size: 24px;
-    cursor: pointer;
-    font-weight: 900;
-    letter-spacing: 10px;
-    font-style: italic;
-    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-}
-
-.header-welcome .header-group-1 span {
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-}
-
-.header-group-2 button {
-    padding: 10px 15px;
-    border: none;
-    background-color: rgba(246, 51, 37, 0.874);
-    height: 50px;
-    border-radius: 20px;
-    -webkit-border-radius: 20px;
-    -moz-border-radius: 20px;
-    -ms-border-radius: 20px;
-    -o-border-radius: 20px;
-    cursor: pointer;
-    font-size: 13px;
-    font-weight: 600;
-}
-
-.header-group-1 {
-    display: grid;
-    grid-template-columns: repeat(3, 0.33fr);
-    place-items: center;
-}
-
-.header-group-2 {
-    display: grid;
-    grid-template-columns: 0.5fr 0.5fr;
-    grid-gap: 20px;
-    place-items: center;
-}
+  .movieLandiaLogo {
+      padding-left: 30px;
+      cursor: pointer;
+  }
