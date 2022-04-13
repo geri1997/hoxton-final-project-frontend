@@ -62,12 +62,22 @@ function App() {
                 <HomePage validateUser = {validateUser} />} 
             />
 
-            <Route path="/videos/:id" element={
+            {/* <Route path="/videos/:id" element={
+                //@ts-ignore
+                <MoviePage validateUser = {validateUser} />} 
+            /> */}
+
+            <Route path="/video" element={
                 //@ts-ignore
                 <MoviePage validateUser = {validateUser} />} 
             />
 
-            <Route path="/users/:id" element={
+            {/* <Route path="/users/:id" element={
+                //@ts-ignore
+                <ProfilePage validateUser = {validateUser} />} 
+            /> */}
+
+            <Route path="/profile" element={
                 //@ts-ignore
                 <ProfilePage validateUser = {validateUser} />} 
             />
@@ -86,7 +96,12 @@ function App() {
                 />} 
             />
 
-            <Route path="/genres/:name" element={
+            {/* <Route path="/genres/:name" element={
+                //@ts-ignore
+                <GenrePage validateUser = {validateUser} />} 
+            /> */}
+
+            <Route path="/genres" element={
                 //@ts-ignore
                 <GenrePage validateUser = {validateUser} />} 
             />
