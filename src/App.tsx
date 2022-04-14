@@ -6,6 +6,8 @@ import RegisterPage from './Pages/Register/RegisterPage'
 import GenrePage from './Pages/Genre/GenrePage'
 import ProfilePage from './Pages/Profile/ProfilePage'
 import ErrorPage from './Pages/Error/ErrorPage'
+//@ts-ignore
+import { addBackToTop } from 'vanilla-back-to-top'
 
 import {
   BrowserRouter as Router,
@@ -52,6 +54,9 @@ function App() {
   return (
 
     <>
+
+        {addBackToTop()}
+
 
         <Routes>
 
