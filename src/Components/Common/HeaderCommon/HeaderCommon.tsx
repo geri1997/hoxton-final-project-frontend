@@ -39,7 +39,7 @@ export default function HeaderCommon() {
                     <ul className="list-nav">
 
                         <li>Movies</li>
-                        <li>Series</li>
+                        {/* <li>Series</li> */}
                         <li>Genres</li>
                         <li>Netflix</li>
 
