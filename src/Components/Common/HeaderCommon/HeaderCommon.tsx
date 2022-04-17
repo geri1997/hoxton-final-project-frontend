@@ -1,11 +1,15 @@
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useStore } from "../../../Zustand/store";
+import Dropdown from 'react-dropdown';
+import Select from 'react-select';
+import 'react-dropdown/style.css';
 import "./HeaderCommon.css"
 
-export default function HeaderCommon() {
+export default function HeaderCommon(this: any) {
     
     const navigate = useNavigate()
-    const { setUser, setSearchTerm, user } = useStore()
+    const { setUser, setSearchTerm, user, genres, setGenres } = useStore()
 
     function handleLogOut(e: any) {
         e.preventDefault();
@@ -25,6 +29,29 @@ export default function HeaderCommon() {
     function redirectToProfile(user: any) {
         navigate(`../users/${user.id}`);
     }
+
+     // #region "DropDown stuff"
+     const [selectedOption, setSelectedOption] = useState(null);
+
+     function getGenresFromServer(): void {
+
+      fetch(`http://localhost:4000/genres`)
+      .then(resp => resp.json())
+      .then(genresFromServer => setGenres(genresFromServer))
+
+    }
+
+    useEffect(getGenresFromServer, [])
+
+     const options: any = []
+
+     for (const genre of genres) {
+         options.push({value: genre.name, label: genre.name})
+     }
+ 
+    //  const defaultOption: any = options[0]
+    
+     // #endregion
     
     return (
 
@@ -40,7 +67,19 @@ export default function HeaderCommon() {
 
                         <li>Movies</li>
                         {/* <li>Series</li> */}
-                        <li>Genres</li>
+                        
+                        <li>
+                          Genres
+                          {/* @ts-ignore */}
+                          {/* <Dropdown options={options} onChange={this._onSelect} value={defaultOption} placeholder="Select an option" />; */}
+                        </li>
+
+                        <Select
+                            defaultValue={selectedOption}
+                            onChange={setSelectedOption}
+                            options={options}
+                        />
+                        
                         <li>Netflix</li>
 
                     </ul>

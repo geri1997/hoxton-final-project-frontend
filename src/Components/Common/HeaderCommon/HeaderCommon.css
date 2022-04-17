@@ -29,8 +29,8 @@ header.header .header-group-1 a {
 
 header.header .header-group-1 ul {
   display: grid;
-  grid-template-columns: repeat(3, 0.33fr);
-  grid-gap: 15px;
+  grid-template-columns: 0.1fr 0.1fr 100px 0.1fr;
+  grid-gap: 25px;
   place-items: center;
 }
 
