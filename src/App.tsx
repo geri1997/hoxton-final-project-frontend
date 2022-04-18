@@ -106,7 +106,7 @@ function App() {
                 <GenrePage validateUser = {validateUser} />} 
             /> */}
 
-            <Route path="/genres" element={
+            <Route path="/genres/:name" element={
                 //@ts-ignore
                 <GenrePage validateUser = {validateUser} />} 
             />

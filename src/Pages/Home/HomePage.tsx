@@ -3,6 +3,7 @@ import Carousel from "@palustris/react-images";
 import { useCallback, useEffect, useState } from "react";
 import ReactLoading from "react-loading";
 import ReactPaginate from "react-paginate";
+import { useNavigate } from "react-router";
 import FooterCommon from "../../Components/Common/FooterCommon/FooterCommon";
 import HeaderCommon from "../../Components/Common/HeaderCommon/HeaderCommon";
 import { useStore } from "../../Zustand/store";
@@ -10,6 +11,8 @@ import "./HomePage.css"
 // #endregion
 
 export default function HomePage({validateUser}:any) {
+
+    const navigate = useNavigate()
 
     // #region "Validating user if its logged in in each page, localstorage way"
     useEffect(() => {
@@ -170,7 +173,13 @@ export default function HomePage({validateUser}:any) {
 
                                             //@ts-ignore
                                             movie.genres.map(genre => 
-                                                <span>{genre.genre.name}</span>
+
+                                                <span key={genre.genre.name} onClick={function (e) {
+                                                    e.stopPropagation()
+                                                    navigate(`/genres/${genre.genre.name}`)
+
+                                                }}>{genre.genre.name}</span>
+
                                             )
 
                                         }
@@ -219,15 +228,19 @@ export default function HomePage({validateUser}:any) {
                                     <img src={latestMovie.photoSrc} />
                                     <span className="movie-title">{latestMovie.title}</span>
                                     
-                                    
-
                                     <div className="genres-holder-span">
 
                                         {
 
                                             //@ts-ignore
                                             latestMovie.genres.map(genre => 
-                                                <span>{genre.genre.name}</span>
+
+                                                <span key={genre.genre.name} onClick={function (e) {
+                                                    e.stopPropagation()
+                                                    navigate(`/genres/${genre.genre.name}`)
+
+                                                }}>{genre.genre.name}</span>
+                                                
                                             )
 
                                         }

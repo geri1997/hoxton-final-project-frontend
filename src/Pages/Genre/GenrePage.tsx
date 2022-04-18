@@ -1,37 +1,71 @@
-import { useState } from "react"
+// #region "Importing"
+import { useEffect, useState } from "react"
+import ReactLoading from "react-loading"
 import ReactPaginate from "react-paginate"
+import { useNavigate, useParams } from "react-router"
 import FooterCommon from "../../Components/Common/FooterCommon/FooterCommon"
 import HeaderCommon from "../../Components/Common/HeaderCommon/HeaderCommon"
+import { useStore } from "../../Zustand/store"
 import "./GenrePage.css"
+// #endregion
 
 export default function GenrePage({validateUser}:any) {
 
+    const params = useParams()
+    const navigate = useNavigate()
+
+    const { movies, setMovies } = useStore()
+
+    // #region "Validating user if its logged in in each page, localstorage way"
+    useEffect(() => {
+        validateUser();
+    }, []);
+    // #endregion
+
+    // #region "Pagination Feature"
     const [pageNumber, setPageNumber] = useState(0)
-    const [itemsPerPage, setItemsPerPage] = useState(4)
+    const [itemsPerPage, setItemsPerPage] = useState(20)
+    const [moviesCountGenre, setMoviesCountGenres] = useState<any>(0)
 
     let pagesVisited = pageNumber * itemsPerPage
-    const pageCount = Math.ceil(50 / itemsPerPage)
+    const pageCount = Math.ceil(moviesCountGenre / itemsPerPage)
 
     function handleChangingPageNumber(selected:any) {
         setPageNumber(selected)
     }
     
-    function handleChangingPageNumberToZero(number:any) {
-        setPageNumber(number)
-    }
-
     const changePage = ({ selected }:any) => {
-
-        if (pagesVisited > 20) {
-            handleChangingPageNumberToZero(0)
-        }
-
-        else {
-            handleChangingPageNumber(selected)
-        }
-        
+        handleChangingPageNumber(selected)
+        getMoviesFromServerOnGenre(selected)
     }
+    // #endregion
     
+    // #region "Getting and movies stuff"
+    function getMoviesFromServerOnGenre(pageNr = 0): void {
+
+        fetch(`http://localhost:4000/genres/${params.name}?page=${pageNr + 1}`)
+        .then(resp => resp.json())
+        .then(moviesFromServer => {
+            setMovies(moviesFromServer.movies)
+            setMoviesCountGenres(moviesFromServer.count)
+        })
+
+    }
+
+    useEffect(getMoviesFromServerOnGenre, [])
+    // #endregion
+    
+    // #region "Checking stuff wich came from server"
+    if (movies[0]?.title === undefined || movies[0]?.title === null) {
+
+        return (
+            <div className="loading-wrapper">
+                <ReactLoading type={"spin"} color={"#000"} height={200} width={100} className="loading" />
+            </div>
+        )    
+    
+    }
+
     return (
 
         <>
@@ -42,75 +76,51 @@ export default function GenrePage({validateUser}:any) {
                 
                 <div className="genre-ribbon-1">
 
-                    
                     <div className="image-ribbon-1-genre-wrapper">
 
-                        <div className="movie-item-genre">
-
-                            <img src="/assets/images/foto1.png" />
-                            <span className="movie-title">Moon Knight</span>
+                        {
                             
-                            <div className="genres-holder-span">
-                                <span>Action</span>
-                                <span>Thriller</span>
-                                <span>Comedy</span>
-                            </div>
+                            //@ts-ignore
+                            movies?.map(movie => 
+                                
+                                <div className="movie-item-genre" key={movie.id}>
 
-                            <span className="imdb-span">IMDB 7.5</span>
-                            
-                        </div>
+                                    <img src={movie?.photoSrc} />
+                                    <span className="movie-title">{movie?.title}</span>
 
-                        <div className="movie-item-genre">
+                                    <div className="genres-holder-span">
 
-                            <img src="/assets/images/foto1.png" />
-                            <span className="movie-title">Moon Knight</span>
+                                        {
 
-                            <div className="genres-holder-span">
-                                <span>Action</span>
-                                <span>Thriller</span>
-                                <span>Comedy</span>
-                            </div>
+                                            //@ts-ignore
+                                            movie?.genres.map(genre => 
 
-                            <span className="imdb-span">IMDB 7.5</span>
+                                                <span key={genre.genre.name} onClick={function (e) {
+                                                    e.stopPropagation()
+                                                    navigate(`/genres/${genre.genre.name}`)
 
-                        </div>
+                                                }}>{genre.genre.name}</span>
+                                                
+                                            )
 
-                        <div className="movie-item-genre">
+                                        }
+                                        
+                                    </div>
 
-                            <img src="/assets/images/foto1.png" />
-                            <span className="movie-title">Moon Knight</span>
+                                    <span className="imdb-span">{ movie?.ratingImdb !== 0 ? "Imdb: " + movie?.ratingImdb : "Imdb: " + "N/A" }</span>
 
-                            <div className="genres-holder-span">
-                                <span>Action</span>
-                                <span>Thriller</span>
-                                <span>Comedy</span>
-                            </div>
+                                </div>
 
-                            <span className="imdb-span">IMDB 7.5</span>
+                            )
 
-                        </div>
-
-                        <div className="movie-item-genre">
-
-                            <img src="/assets/images/foto1.png" />
-                            <span className="movie-title">Moon Knight</span>
-
-                            <div className="genres-holder-span">
-                                <span>Action</span>
-                                <span>Thriller</span>
-                                <span>Comedy</span>
-                            </div>
-
-                            <span className="imdb-span">IMDB 7.5</span>
-
-                        </div>
+                        }
 
                     </div>
                 
                     <ReactPaginate
                         previousLabel={"< Previous"}
                         nextLabel={"Next >"}
-                        pageCount={30}
+                        pageCount={pageCount}
                         onPageChange={changePage}
                         containerClassName={"paginationBttns"}
                         previousLinkClassName={"previousBttn"}
