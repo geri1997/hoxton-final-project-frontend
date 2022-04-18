@@ -125,7 +125,7 @@ export const useStore = create<AppStoreState>((set, get): AppStoreState => ({
             password: passwordRegister
         }
 
-        fetch('http://localhost:4000/users', {
+        fetch('http://localhost:4000/sign-up', {
 
             method: 'POST',
             headers: {

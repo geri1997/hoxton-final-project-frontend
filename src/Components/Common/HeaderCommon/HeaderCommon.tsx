@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, NavLink } from "react-router-dom";
 import { useStore } from "../../../Zustand/store";
 // import Dropdown from 'react-dropdown';
 import Select from 'react-select';
@@ -9,6 +9,7 @@ import "./HeaderCommon.css"
 export default function HeaderCommon(this: any) {
     
     const navigate = useNavigate()
+
     const { setUser, setSearchTerm, user, genres, setGenres } = useStore()
 
     function handleLogOut(e: any) {
@@ -27,7 +28,8 @@ export default function HeaderCommon(this: any) {
     }
 
     function redirectToProfile(user: any) {
-        navigate(`../users/${user.id}`);
+        // navigate(`../users/${user.id}`);
+        navigate(`../users/${user.userName}`);
     }
 
      // #region "DropDown stuff"
@@ -66,8 +68,14 @@ export default function HeaderCommon(this: any) {
                     <ul className="list-nav">
 
                         <div className="div-inside-li">
+
                             <img src="/assets/logos/ico_filma_blu.png" alt="" />
-                            <li>Movies</li>
+                            
+                            <li className="special-uppercase" onClick={function (e) {
+                                e.stopPropagation()
+                                navigate(`../home`)
+                            }}>Movies</li>
+
                         </div>
 
                         <div className="div-inside-li-special">
@@ -77,7 +85,7 @@ export default function HeaderCommon(this: any) {
                                 <div className="genre-drop">
 
                                     <img src="/assets/logos/list_blu.png" alt="" />
-                                    <li>Genres</li>
+                                    <li className="special-uppercase">Genres</li>
 
                                 </div>
                     
@@ -88,7 +96,13 @@ export default function HeaderCommon(this: any) {
                                         {
                                             //@ts-ignore
                                             genres.map(genre => 
-                                                <li>{genre.name}</li>
+
+                                                <li className = "special-list-drop" key={genre.id} onClick={function (e: any) {
+                                                    e.stopPropagation()
+                                                    navigate(`/genres/${genre.name}`)
+
+                                                }}>{genre.name}</li>
+
                                             )
 
                                         }
@@ -109,8 +123,14 @@ export default function HeaderCommon(this: any) {
                         /> */}
                         
                         <div className="div-inside-li">
+
                             <img src="/assets/logos/netflix-red.png" alt="" />
-                            <li>Netflix</li>
+                            
+                            <li className="special-uppercase" onClick={function (e) {
+                                e.stopPropagation()
+                                navigate(`/genres/NETFLIX`)
+                            }}>Netflix</li>
+                            
                         </div>
 
                     </ul>
@@ -146,7 +166,7 @@ export default function HeaderCommon(this: any) {
                                 }}
                               >
 
-                                <img src={`http://localhost:4000/avatar/${user?.userName}`} />
+                                <img src={`/assets/avatars/blankavatar.jpg`} />
                                 {user.userName}
                                 
                               </li>
