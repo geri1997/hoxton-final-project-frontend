@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useStore } from "../../../Zustand/store";
-import Dropdown from 'react-dropdown';
+// import Dropdown from 'react-dropdown';
 import Select from 'react-select';
 import 'react-dropdown/style.css';
 import "./HeaderCommon.css"
@@ -70,9 +70,35 @@ export default function HeaderCommon(this: any) {
                             <li>Movies</li>
                         </div>
 
-                        <div className="div-inside-li">
-                            <img src="/assets/logos/list_blu.png" alt="" />
-                            <li>Genres</li>
+                        <div className="div-inside-li-special">
+
+                            <div className="dropdown">
+
+                                <div className="genre-drop">
+
+                                    <img src="/assets/logos/list_blu.png" alt="" />
+                                    <li>Genres</li>
+
+                                </div>
+                    
+                                <div className="dropdown-content">
+
+                                    <ul>
+                                        
+                                        {
+                                            //@ts-ignore
+                                            genres.map(genre => 
+                                                <li>{genre.name}</li>
+                                            )
+
+                                        }
+
+                                    </ul>
+
+                                </div>
+
+                            </div>
+
                         </div>
 
                         {/* <Select
