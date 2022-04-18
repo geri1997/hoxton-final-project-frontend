@@ -14,6 +14,7 @@ export const useStore = create<AppStoreState>((set, get): AppStoreState => ({
     movieItem: null,
     comments: [],
     favorites: [],
+    latestMovies: [],
 
     setComments: (array) => {
         set({ comments: array })
@@ -45,6 +46,10 @@ export const useStore = create<AppStoreState>((set, get): AppStoreState => ({
 
     setFavorites: (favoritesFromServer) => {
         set({ favorites: favoritesFromServer })
+    },
+
+    setLatestMovies: (latestMoviesFromServer) => {
+        set({latestMovies: latestMoviesFromServer})
     },
     // #endregion
 
