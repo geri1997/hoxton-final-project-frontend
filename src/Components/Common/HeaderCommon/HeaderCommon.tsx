@@ -65,22 +65,27 @@ export default function HeaderCommon(this: any) {
                     
                     <ul className="list-nav">
 
-                        <li>Movies</li>
-                        {/* <li>Series</li> */}
-                        
-                        <li>
-                          Genres
-                          {/* @ts-ignore */}
-                          {/* <Dropdown options={options} onChange={this._onSelect} value={defaultOption} placeholder="Select an option" />; */}
-                        </li>
+                        <div className="div-inside-li">
+                            <img src="/assets/logos/ico_filma_blu.png" alt="" />
+                            <li>Movies</li>
+                        </div>
 
-                        <Select
+                        <div className="div-inside-li">
+                            <img src="/assets/logos/list_blu.png" alt="" />
+                            <li>Genres</li>
+                        </div>
+
+                        {/* <Select
                             defaultValue={selectedOption}
                             onChange={setSelectedOption}
                             options={options}
-                        />
+                            className="select-genres"
+                        /> */}
                         
-                        <li>Netflix</li>
+                        <div className="div-inside-li">
+                            <img src="/assets/logos/netflix-red.png" alt="" />
+                            <li>Netflix</li>
+                        </div>
 
                     </ul>
 

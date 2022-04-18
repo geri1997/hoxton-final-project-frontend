@@ -73,11 +73,12 @@ export default function HomePage({validateUser}:any) {
 
     function getMoviesFromServer(): void {
 
-        fetch(`http://localhost:4000/movies/page/1`)
+        fetch(`http://localhost:4000/movies/page/4`)
         .then(resp => resp.json())
         .then(moviesFromServer => setMovies(moviesFromServer))
 
     }
+
     useEffect(getMoviesFromServer, [])
 
     function getLatestMoviesFromServer(): void {
@@ -156,31 +157,41 @@ export default function HomePage({validateUser}:any) {
 
                 <div className="home-ribbon-2">
 
+                    <h3>Sort By: </h3>
+
                     <ul className="list-sort">
                         <li>Latest movies</li>
-                        <li>Most viewed</li>
-                        <li>IMDB</li>
-                        <li>A-Z</li>
+                        <li>Most viewed movies</li>
+                        <li>Imdb rating</li>
+                        <li>A-Z alphabeticaly</li>
                     </ul>
                     
                     <div className="image-ribbon-2-wrapper">
 
                         {
+                            
                             //@ts-ignore
                             movies?.map(movie => 
                                 
                                 <div className="movie-item">
 
-                                    <img src="/assets/images/foto1.png" />
+                                    <img src={movie.photoSrc} />
                                     <span className="movie-title">{movie.title}</span>
 
                                     <div className="genres-holder-span">
-                                        <span>Action</span>
-                                        <span>Thriller</span>
-                                        <span>Comedy</span>
+
+                                        {
+
+                                            //@ts-ignore
+                                            movie.genres.map(genre => 
+                                                <span>{genre.genre.name}</span>
+                                            )
+
+                                        }
+                                        
                                     </div>
 
-                                    <span className="imdb-span">{movie.ratingImdb}</span>
+                                    <span className="imdb-span">{ movie.ratingImdb !== 0 ? "Imdb: " + movie.ratingImdb : "Imdb: " + "N/A" }</span>
 
                                 </div>
 
@@ -207,10 +218,7 @@ export default function HomePage({validateUser}:any) {
                 <div className="home-ribbon-3">
 
                     <ul className="list-latest">
-
                         <li className="special-last">LATEST MOVIES</li>
-                        {/* <li>View All</li> */}
-
                     </ul>
                     
                     <div className="image-ribbon-3-wrapper">
@@ -222,16 +230,25 @@ export default function HomePage({validateUser}:any) {
                                 
                                 <div className="movie-item-latest">
 
-                                    <img src="/assets/images/foto1.png" />
+                                    <img src={latestMovie.photoSrc} />
                                     <span className="movie-title">{latestMovie.title}</span>
                                     
+                                    
+
                                     <div className="genres-holder-span">
-                                        <span>Action</span>
-                                        <span>Thriller</span>
-                                        <span>Comedy</span>
+
+                                        {
+
+                                            //@ts-ignore
+                                            latestMovie.genres.map(genre => 
+                                                <span>{genre.genre.name}</span>
+                                            )
+
+                                        }
+
                                     </div>
-        
-                                    <span className="imdb-span">{latestMovie.ratingImdb}</span>
+
+                                    <span className="imdb-span">{ latestMovie.ratingImdb !== 0 ? "Imdb: " + latestMovie.ratingImdb : null }</span>
                                     
                                 </div>
 
