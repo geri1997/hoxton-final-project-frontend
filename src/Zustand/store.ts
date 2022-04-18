@@ -2,7 +2,7 @@ import create from 'zustand'
 import { mountStoreDevtool } from 'simple-zustand-devtools';
 import AppStoreState from './types/interfaceStore'
 
-export const useStore = create<AppStoreState>((set, get):AppStoreState => ({
+export const useStore = create<AppStoreState>((set, get): AppStoreState => ({
 
     // #region 'GeneralState'
     users: [],
@@ -16,35 +16,35 @@ export const useStore = create<AppStoreState>((set, get):AppStoreState => ({
     favorites: [],
 
     setComments: (array) => {
-        set({comments: array})
+        set({ comments: array })
     },
 
     setSearchTerm: (string) => {
-        set({searchTerm: string})
+        set({ searchTerm: string })
     },
 
     setMovieItem: (data) => {
-        set({movieItem: data})
+        set({ movieItem: data })
     },
 
     setGenres: (genresFromServer) => {
-        set({genres: genresFromServer})
+        set({ genres: genresFromServer })
     },
 
     setMovies: (moviesFromServer) => {
-        set({movies: moviesFromServer})
+        set({ movies: moviesFromServer })
     },
 
     setUser: (data) => {
-        set({user: data})
+        set({ user: data })
     },
-    
+
     setUserItem: (data) => {
-        set({userItem: data})
+        set({ userItem: data })
     },
 
     setFavorites: (favoritesFromServer) => {
-        set({favorites: favoritesFromServer})
+        set({ favorites: favoritesFromServer })
     },
     // #endregion
 
@@ -54,11 +54,11 @@ export const useStore = create<AppStoreState>((set, get):AppStoreState => ({
     passwordLogin: "",
 
     handleEmailChangeLogin: (e) => {
-        set({emailLogin: e.target.value})
+        set({ emailLogin: e.target.value })
     },
 
     handlePasswordChangeLogin: (e) => {
-        set({passwordLogin: e.target.value})
+        set({ passwordLogin: e.target.value })
     },
 
     handleFormSubmitLogin: (e) => {
@@ -75,28 +75,28 @@ export const useStore = create<AppStoreState>((set, get):AppStoreState => ({
 
         fetch("http://localhost:4000/login", {
 
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formData),
         })
-        .then((resp) => resp.json())
-        .then((data) => {
+            .then((resp) => resp.json())
+            .then((data) => {
 
-            if (data.error) {
-                alert(data.error);
-            } 
-            
-            else {
-                // we managed to sign in!
-                localStorage.setItem("token", data.token);
-                set({user: data.user});
-                // navigate("/home");
-            }
+                if (data.error) {
+                    alert(data.error);
+                }
 
-        });
-      
+                else {
+                    // we managed to sign in!
+                    localStorage.setItem("token", data.token);
+                    set({ user: data.user });
+                    // navigate("/home");
+                }
+
+            });
+
     },
     // #endregion
 
@@ -110,7 +110,7 @@ export const useStore = create<AppStoreState>((set, get):AppStoreState => ({
 
         e.preventDefault()
 
-        const { 
+        const {
             users, userNameRegister, emailRegister, passwordRegister
         } = get()
 
@@ -127,18 +127,18 @@ export const useStore = create<AppStoreState>((set, get):AppStoreState => ({
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(formData)
-            })
+        })
             .then(resp => resp.json())
             .then(data => {
 
                 if (data.error) {
                     alert('Oops, something went wrong.')
-                } 
-                
+                }
+
                 else {
                     // we managed to create our user!
                     localStorage.setItem('token', data.token)
-                    set({user: data.user})
+                    set({ user: data.user })
                 }
 
             })
@@ -146,15 +146,15 @@ export const useStore = create<AppStoreState>((set, get):AppStoreState => ({
     },
 
     handleUserNameRegister: (e: any) => {
-        set({userNameRegister: e.target.value})
+        set({ userNameRegister: e.target.value })
     },
 
     handleEmailRegister: (e: any) => {
-        set({emailRegister: e.target.value})
+        set({ emailRegister: e.target.value })
     },
 
     handlePasswordChangeRegister: (e: any) => {
-        set({passwordRegister: e.target.value})
+        set({ passwordRegister: e.target.value })
     },
     //#endregion
 
