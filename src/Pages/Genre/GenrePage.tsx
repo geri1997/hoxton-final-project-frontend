@@ -52,7 +52,7 @@ export default function GenrePage({validateUser}:any) {
 
     }
 
-    useEffect(getMoviesFromServerOnGenre, [])
+    useEffect(getMoviesFromServerOnGenre, [params.name])
     // #endregion
     
     // #region "Checking stuff wich came from server"

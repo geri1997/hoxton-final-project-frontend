@@ -83,6 +83,13 @@ function App() {
                 />} 
             />
 
+            <Route path="/genres/:name/page/:pageNr" element={
+                <GenrePage
+                    //@ts-ignore
+                    validateUser = {validateUser}
+                />} 
+            />
+
             <Route path="/register" element={
                 <RegisterPage 
                 //@ts-ignore

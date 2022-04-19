@@ -96,7 +96,7 @@ export default function HeaderCommon(this: any) {
                                                 <li className = "special-list-drop" key={genre.id} onClick={function (e: any) {
                                                     e.stopPropagation()
                                                     navigate(`../genres/${genre.name}`)
-                                                    window.location.reload()
+                                                    // window.location.reload()
                                                 }}>{genre.name}</li>
 
                                             )
@@ -118,7 +118,7 @@ export default function HeaderCommon(this: any) {
                             <li className="special-uppercase" onClick={function (e) {
                                 e.stopPropagation()
                                 navigate(`../genres/NETFLIX`)
-                                window.location.reload()
+                                // window.location.reload()
                             }}>Netflix</li>
                             
                         </div>
