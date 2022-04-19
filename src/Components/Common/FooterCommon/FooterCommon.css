@@ -1,8 +1,8 @@
 .footer-welcome {
     display: grid;
     grid-area: footer;
-    grid-template-rows: 0.5fr 0.5fr;
-    grid-gap: 5px;
+    grid-template-rows: 40px 40px;
+    grid-gap: 10px;
     place-items: center;
     height: 200px;
     background-color: #012b36;
@@ -10,8 +10,8 @@
 }
 
 .footer-welcome span {
-    font-size: 15px;
-    font-weight: 600;
-    letter-spacing: 2px;
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: 1px;
     color: #fff;
 }

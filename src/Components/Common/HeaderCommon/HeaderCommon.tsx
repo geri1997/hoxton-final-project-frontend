@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, NavLink } from "react-router-dom";
 import { useStore } from "../../../Zustand/store";
-import Dropdown from 'react-dropdown';
+// import Dropdown from 'react-dropdown';
 import Select from 'react-select';
 import 'react-dropdown/style.css';
 import "./HeaderCommon.css"
@@ -9,6 +9,7 @@ import "./HeaderCommon.css"
 export default function HeaderCommon(this: any) {
     
     const navigate = useNavigate()
+
     const { setUser, setSearchTerm, user, genres, setGenres } = useStore()
 
     function handleLogOut(e: any) {
@@ -27,7 +28,8 @@ export default function HeaderCommon(this: any) {
     }
 
     function redirectToProfile(user: any) {
-        navigate(`../users/${user.id}`);
+        // navigate(`../users/${user.id}`);
+        navigate(`../users/${user.userName}`);
     }
 
      // #region "DropDown stuff"
@@ -65,22 +67,71 @@ export default function HeaderCommon(this: any) {
                     
                     <ul className="list-nav">
 
-                        <li>Movies</li>
-                        {/* <li>Series</li> */}
-                        
-                        <li>
-                          Genres
-                          {/* @ts-ignore */}
-                          {/* <Dropdown options={options} onChange={this._onSelect} value={defaultOption} placeholder="Select an option" />; */}
-                        </li>
+                        <div className="div-inside-li">
 
-                        <Select
+                            <img src="/assets/logos/ico_filma_blu.png" alt="" />
+                            
+                            <li className="special-uppercase" onClick={function (e) {
+                                e.stopPropagation()
+                                navigate(`../home`)
+                            }}>Movies</li>
+
+                        </div>
+
+                        <div className="div-inside-li-special">
+
+                            <div className="dropdown">
+
+                                <div className="genre-drop">
+
+                                    <img src="/assets/logos/list_blu.png" alt="" />
+                                    <li className="special-uppercase">Genres</li>
+
+                                </div>
+                    
+                                <div className="dropdown-content">
+
+                                    <ul>
+                                        
+                                        {
+                                            //@ts-ignore
+                                            genres.map(genre => 
+
+                                                <li className = "special-list-drop" key={genre.id} onClick={function (e: any) {
+                                                    e.stopPropagation()
+                                                    navigate(`/genres/${genre.name}`)
+
+                                                }}>{genre.name}</li>
+
+                                            )
+
+                                        }
+
+                                    </ul>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        {/* <Select
                             defaultValue={selectedOption}
                             onChange={setSelectedOption}
                             options={options}
-                        />
+                            className="select-genres"
+                        /> */}
                         
-                        <li>Netflix</li>
+                        <div className="div-inside-li">
+
+                            <img src="/assets/logos/netflix-red.png" alt="" />
+                            
+                            <li className="special-uppercase" onClick={function (e) {
+                                e.stopPropagation()
+                                navigate(`/genres/NETFLIX`)
+                            }}>Netflix</li>
+                            
+                        </div>
 
                     </ul>
 
@@ -115,7 +166,7 @@ export default function HeaderCommon(this: any) {
                                 }}
                               >
 
-                                <img src={`http://localhost:4000/avatar/${user?.userName}`} />
+                                <img src={`/assets/avatars/blankavatar.jpg`} />
                                 {user.userName}
                                 
                               </li>
