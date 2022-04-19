@@ -22,6 +22,7 @@ export default function GenrePage({validateUser}:any) {
     }, []);
     // #endregion
 
+
     // #region "Pagination Feature"
     const [pageNumber, setPageNumber] = useState(0)
     const [itemsPerPage, setItemsPerPage] = useState(20)
@@ -36,27 +37,51 @@ export default function GenrePage({validateUser}:any) {
     
     const changePage = ({ selected }:any) => {
         handleChangingPageNumber(selected)
-        getMoviesFromServerOnGenre(selected)
+        navigate(`../genres/${params.name}/page/${selected + 1}`)
+        // getMoviesFromServerOnGenre(selected)
     }
     // #endregion
     
+
     // #region "Getting and movies stuff"
     function getMoviesFromServerOnGenre(pageNr = 0): void {
 
-        fetch(`http://localhost:4000/genres/${params.name}?page=${pageNr + 1}`)
-        .then(resp => resp.json())
-        .then(moviesFromServer => {
-            setMovies(moviesFromServer.movies)
-            setMoviesCountGenres(moviesFromServer.count)
-        })
+        if (params.page === undefined || params.page === null) {
+
+            fetch(`http://localhost:4000/genres/${params.name}?page=1`)
+            .then(resp => resp.json())
+            .then(moviesFromServer => {
+                setMovies(moviesFromServer.movies)
+                setMoviesCountGenres(moviesFromServer.count)
+            })
+
+        }
+
+        else {
+            
+            fetch(`http://localhost:4000/genres/${params.name}?page=${params.page}`)
+            .then(resp => resp.json())
+            .then(moviesFromServer => {
+                setMovies(moviesFromServer.movies)
+                setMoviesCountGenres(moviesFromServer.count)
+            })
+
+        }
 
     }
 
-    useEffect(getMoviesFromServerOnGenre, [params.name])
+    if (params.page === undefined || params.page === null) {
+        useEffect(getMoviesFromServerOnGenre, [params.name, params.page])
+    }
+
+    else {
+        useEffect(getMoviesFromServerOnGenre, [params.name, params.page])
+    }
     // #endregion
     
+
     // #region "Checking stuff wich came from server"
-    if (movies[0]?.title === undefined || movies[0]?.title === null) {
+    if (movies[0]?.title === undefined) {
 
         return (
             <div className="loading-wrapper">
