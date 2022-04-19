@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, NavLink } from "react-router-dom";
 import { useStore } from "../../../Zustand/store";
-import Select from 'react-select';
 import 'react-dropdown/style.css';
 import "./HeaderCommon.css"
 
@@ -18,22 +17,12 @@ export default function HeaderCommon(this: any) {
         navigate("/login");
     }
 
-    function submitSearch(inputValue: any) {
-        setSearchTerm(inputValue);
-    }
-    
-    function redirectToHome() {
-        navigate("../home");
-    }
-
     function redirectToProfile(user: any) {
         // navigate(`../users/${user.id}`);
         navigate(`../users/${user.userName}`);
     }
 
      // #region "DropDown stuff"
-     const [selectedOption, setSelectedOption] = useState(null);
-
      function getGenresFromServer(): void {
 
       fetch(`http://localhost:4000/genres`)
@@ -132,11 +121,12 @@ export default function HeaderCommon(this: any) {
                     <form className="button-search" onSubmit={function (e) {
                         e.preventDefault()
                         //@ts-ignore
-                        navigate(`../movies/search/${e.target.value}`)
+                        setSearchTerm(e.target.value)
+                        navigate(`../movies/search/${searchTerm}`)
                     }}>
 
-                        <input type="search" name="searchMovie" placeholder="Search" aria-label="Search through site content" onChange={function (e) {
-                            // setSearchTerm(e.target.value)
+                        <input type="search" name="searchMovie"  placeholder="Search" aria-label="Search through site content" onChange={function (e) {
+                            setSearchTerm(e.target.value)
                             navigate(`../movies/search/${e.target.value}`)
                         }}/>
 

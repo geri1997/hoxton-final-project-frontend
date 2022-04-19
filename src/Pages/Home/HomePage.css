@@ -2,18 +2,29 @@
     display: grid;
     grid-template: 
     "header" 100px
-    "ribbon-1" 500px
+    "ribbon-1" auto
     "ribbon-2" auto
     "ribbon-3" auto
     "footer" 200px / 
     1fr;
 
     height: auto;
-    grid-gap: 50px;
+    grid-gap: 30px;
     width: 100%;
     background-color: #004355;
 }
 
+.no-search span {
+    font-size: 26px;
+    color: #fff;
+    font-weight: 900;
+}
+
+.no-search {
+    display: grid;
+    place-items: center;
+    padding-top: 50px;
+}
 .movie-item {
     display: grid;
     grid-template-rows: 0.7fr 0.1fr 0.1fr 0.1fr;
@@ -170,7 +181,7 @@
 .home-ribbon-2 {
     grid-area: ribbon-2;
     display: grid;
-    grid-template-rows: 0.1fr 0.1fr 0.1fr auto;
+    grid-template-rows: 50px 0.1fr 0.1fr auto;
     grid-gap: 20px;
     /* place-items: center;
     place-content: center; */
