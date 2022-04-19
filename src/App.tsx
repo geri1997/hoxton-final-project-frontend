@@ -66,6 +66,16 @@ function App() {
                 <HomePage validateUser = {validateUser} />} 
             />
 
+            <Route path="/movies/search/:query" element={
+                //@ts-ignore
+                <HomePage validateUser = {validateUser} />} 
+            />
+
+            <Route path="/movies/search/" element={
+                //@ts-ignore
+                <HomePage validateUser = {validateUser} />} 
+            />
+
             <Route path="/movies/page/:page" element={
                 //@ts-ignore
                 <HomePage validateUser = {validateUser} />} 

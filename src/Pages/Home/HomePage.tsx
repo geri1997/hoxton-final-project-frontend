@@ -32,7 +32,14 @@ export default function HomePage({validateUser}:any) {
         .then(movieCountFromServer => setMoviesCount(movieCountFromServer))
 
     }
-    useEffect(getMovieCountFromServer, [])
+
+    if (params.query === undefined) {
+        useEffect(getMovieCountFromServer, [])
+    }
+
+    else {
+        useEffect(getMovieCountFromServer, [])
+    }
     // #endregion
 
 
@@ -56,11 +63,12 @@ export default function HomePage({validateUser}:any) {
 
 
     // #region "Getting and movies stuff"
-    const { movies, setMovies, latestMovies, setLatestMovies, genres, setGenres } = useStore()
+    const { movies, setMovies, latestMovies, setLatestMovies, genres, setGenres, searchTerm, setSearchTerm } = useStore()
 
     function getMoviesFromServer(): void {
 
-        if (params.page === undefined || params.page === null) {
+        //@ts-ignore
+        if (params.page === undefined && params.query === undefined) {
 
             fetch(`http://localhost:4000/movies/page/1`)
             .then(resp => resp.json())
@@ -68,7 +76,8 @@ export default function HomePage({validateUser}:any) {
 
         }
 
-        else {
+        //@ts-ignore
+        else if(params.page && params.query === undefined) {
             
             fetch(`http://localhost:4000/movies/page/${params.page}`)
             .then(resp => resp.json())
@@ -76,14 +85,34 @@ export default function HomePage({validateUser}:any) {
 
         }
 
+        else if(params.page === undefined && params.query) {
+            
+            fetch(`http://localhost:4000/search`, {
+                method: "POST",
+                headers: {
+                    "content-type": "application/json"
+                },
+                body: JSON.stringify({
+                    title: String(params?.query!)
+                })
+            })
+            .then(resp => resp.json())
+            .then(moviesFromServer => setMovies(moviesFromServer))
+
+        }
+
     }
 
-    if (params.page === undefined || params.page === null) {
+    if (params.page === undefined && params.query === undefined) {
         useEffect(getMoviesFromServer, [params.page])
     }
 
-    else {
+    else if (params.page && params.query === undefined) {
         useEffect(getMoviesFromServer, [params.page])
+    }
+
+    else if (params.page === undefined && params.query) {
+        useEffect(getMoviesFromServer, [params.query])
     }
 
     function getLatestMoviesFromServer(): void {
@@ -189,7 +218,8 @@ export default function HomePage({validateUser}:any) {
 
                     </div>
 
-                    <ReactPaginate
+                    { params.query === undefined || params.query === null ? (
+                        <ReactPaginate
                         previousLabel={"< Previous"}
                         nextLabel={"Next >"}
                         pageCount={pageCount}
@@ -200,6 +230,7 @@ export default function HomePage({validateUser}:any) {
                         disabledClassName={"paginationDisabled"}
                         activeClassName={"paginationActive"}
                     />
+                    ): null }
 
                 </div>
 

@@ -9,7 +9,7 @@ export default function HeaderCommon(this: any) {
     
     const navigate = useNavigate()
 
-    const { setUser, setSearchTerm, user, genres, setGenres } = useStore()
+    const { setUser, setSearchTerm, user, genres, setGenres, searchTerm } = useStore()
 
     function handleLogOut(e: any) {
         e.preventDefault();
@@ -129,10 +129,22 @@ export default function HeaderCommon(this: any) {
 
                 <div className="header-group-2">
                     
-                    <div className="button-search">
-                        <input type="search" name="q" placeholder="Search" aria-label="Search through site content"/>
-                        <button type="submit"><i className="fa fa-search"></i></button>
-                    </div>
+                    <form className="button-search" onSubmit={function (e) {
+                        e.preventDefault()
+                        //@ts-ignore
+                        navigate(`../movies/search/${e.target.value}`)
+                    }}>
+
+                        <input type="search" name="searchMovie" placeholder="Search" aria-label="Search through site content" onChange={function (e) {
+                            // setSearchTerm(e.target.value)
+                            navigate(`../movies/search/${e.target.value}`)
+                        }}/>
+
+                        <button type="submit">
+                            <i className="fa fa-search"></i>
+                        </button>
+
+                    </form>
 
                     { user === null ? (
 
@@ -152,7 +164,7 @@ export default function HeaderCommon(this: any) {
                               <li
                                 className="dropbtn"
                                 onClick={function () {
-                                  redirectToProfile(user);
+                                    redirectToProfile(user);
                                 }}
                               >
 
