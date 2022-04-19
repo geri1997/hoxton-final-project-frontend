@@ -1,5 +1,7 @@
 import { useEffect } from "react"
 import { Link, useNavigate } from "react-router-dom"
+import FooterCommon from "../../Components/Common/FooterCommon/FooterCommon"
+import HeaderCommon from "../../Components/Common/HeaderCommon/HeaderCommon"
 import { useStore } from "../../Zustand/store"
 import "./RegisterPage.css"
 
@@ -10,7 +12,9 @@ export default function RegisterPage({validateUser}:any) {
         handleFormSubmitRegister,
         handlePasswordChangeRegister,
         handleUserNameRegister,
-        user
+        user,
+        setUser,
+        users
     } = useStore()
 
     const navigate = useNavigate()
@@ -26,6 +30,9 @@ export default function RegisterPage({validateUser}:any) {
     return (
 
         <>
+
+            {/* @ts-ignore */}
+            <HeaderCommon validateUser = {validateUser} />
 
             <div className="signup-page-wrapper">
 
@@ -97,6 +104,8 @@ export default function RegisterPage({validateUser}:any) {
                 </div>
 
             </div>
+
+            <FooterCommon />
 
         </>
 

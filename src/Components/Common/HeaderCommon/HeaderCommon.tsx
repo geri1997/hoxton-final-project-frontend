@@ -1,11 +1,15 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useNavigate, NavLink } from "react-router-dom";
 import { useStore } from "../../../Zustand/store";
+import Select from 'react-select';
+import 'react-dropdown/style.css';
 import "./HeaderCommon.css"
 
-export default function HeaderCommon() {
+export default function HeaderCommon(this: any) {
     
     const navigate = useNavigate()
-    const { setUser, setSearchTerm, user } = useStore()
+
+    const { setUser, setSearchTerm, user, genres, setGenres } = useStore()
 
     function handleLogOut(e: any) {
         e.preventDefault();
@@ -23,8 +27,29 @@ export default function HeaderCommon() {
     }
 
     function redirectToProfile(user: any) {
-        navigate(`../users/${user.id}`);
+        // navigate(`../users/${user.id}`);
+        navigate(`../users/${user.userName}`);
     }
+
+     // #region "DropDown stuff"
+     const [selectedOption, setSelectedOption] = useState(null);
+
+     function getGenresFromServer(): void {
+
+      fetch(`http://localhost:4000/genres`)
+      .then(resp => resp.json())
+      .then(genresFromServer => setGenres(genresFromServer))
+
+    }
+
+    useEffect(getGenresFromServer, [])
+
+     const options: any = []
+
+     for (const genre of genres) {
+         options.push({value: genre.name, label: genre.name})
+     }
+     // #endregion
     
     return (
 
@@ -34,14 +59,69 @@ export default function HeaderCommon() {
                         
                 <div className="header-group-1">
 
-                    <Link to="/home">MovieLandia24</Link>
+                    <Link to="/movies">MovieLand24</Link>
                     
                     <ul className="list-nav">
 
-                        <li>Movies</li>
-                        <li>Series</li>
-                        <li>Genres</li>
-                        <li>Netflix</li>
+                        <div className="div-inside-li">
+
+                            <img src="/assets/logos/ico_filma_blu.png" alt="" />
+                            
+                            <li className="special-uppercase" onClick={function (e) {
+                                e.stopPropagation()
+                                navigate(`../movies`)
+                            }}>Movies</li>
+
+                        </div>
+
+                        <div className="div-inside-li-special">
+
+                            <div className="dropdown">
+
+                                <div className="genre-drop">
+
+                                    <img src="/assets/logos/list_blu.png" alt="" />
+                                    <li className="special-uppercase">Genres</li>
+
+                                </div>
+                    
+                                <div className="dropdown-content">
+
+                                    <ul>
+                                        
+                                        {
+                                            //@ts-ignore
+                                            genres.map(genre => 
+
+                                                <li className = "special-list-drop" key={genre.id} onClick={function (e: any) {
+                                                    e.stopPropagation()
+                                                    navigate(`../genres/${genre.name}`)
+                                                    // window.location.reload()
+                                                }}>{genre.name}</li>
+
+                                            )
+
+                                        }
+
+                                    </ul>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div className="div-inside-li">
+
+                            <img src="/assets/logos/netflix-red.png" alt="" />
+                            
+                            <li className="special-uppercase" onClick={function (e) {
+                                e.stopPropagation()
+                                navigate(`../genres/NETFLIX`)
+                                // window.location.reload()
+                            }}>Netflix</li>
+                            
+                        </div>
 
                     </ul>
 
@@ -76,7 +156,7 @@ export default function HeaderCommon() {
                                 }}
                               >
 
-                                <img src={`http://localhost:4000/avatar/${user?.userName}`} />
+                                <img src={`/assets/avatars/blankavatar.jpg`} />
                                 {user.userName}
                                 
                               </li>

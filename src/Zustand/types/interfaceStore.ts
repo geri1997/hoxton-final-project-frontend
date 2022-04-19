@@ -11,6 +11,7 @@ export default interface AppStoreState {
     movieItem: any,
     comments: any,
     favorites: any,
+    latestMovies: any,
 
     setComments: (array:any) => void,
     setSearchTerm: (string: string) => void,
@@ -20,6 +21,7 @@ export default interface AppStoreState {
     setUser: (data: any) => void,
     setUserItem: (data:any) => void,
     setFavorites: (favoritesFromServer: any) => void,
+    setLatestMovies: (latestMoviesFromServer: any) => void,
 
     emailLogin: string,
     passwordLogin: string,
