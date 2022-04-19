@@ -170,8 +170,8 @@
 .home-ribbon-2 {
     grid-area: ribbon-2;
     display: grid;
-    grid-template-rows: 0.1fr 0.1fr auto;
-    grid-gap: 40px;
+    grid-template-rows: 0.1fr 0.1fr 0.1fr auto;
+    grid-gap: 20px;
     /* place-items: center;
     place-content: center; */
 }
@@ -182,7 +182,7 @@
     justify-self: center;
     justify-self: end;
     padding-right: 300px;
-    font-size: 18px;
+    font-size: 16px;
     color: #5ad2f3;
 }
 
@@ -261,6 +261,7 @@ ul.list-latest {
     grid-gap: 5px;
     place-items: center;
     height: auto;
+    padding-top: 50px;
 }
 
 /* .image-ribbon-2-wrapper img {

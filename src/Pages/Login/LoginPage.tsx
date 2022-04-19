@@ -21,7 +21,7 @@ export default function LoginPage({validateUser}:any) {
     const navigate = useNavigate();
 
     if (user) {
-        navigate("/home");
+        navigate("../movies");
     }
 
     return (

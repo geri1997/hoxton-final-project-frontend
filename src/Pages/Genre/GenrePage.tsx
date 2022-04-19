@@ -76,8 +76,10 @@ export default function GenrePage({validateUser}:any) {
                 
                 <div className="genre-ribbon-1">
 
-                    <div className="image-ribbon-1-genre-wrapper">
+                    <span className="movie-count-span">Total movies in this genre: {moviesCountGenre} </span>
 
+                    <div className="image-ribbon-1-genre-wrapper">
+                        
                         {
                             
                             //@ts-ignore

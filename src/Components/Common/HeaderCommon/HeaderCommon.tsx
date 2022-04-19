@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, NavLink } from "react-router-dom";
 import { useStore } from "../../../Zustand/store";
-// import Dropdown from 'react-dropdown';
 import Select from 'react-select';
 import 'react-dropdown/style.css';
 import "./HeaderCommon.css"
@@ -50,9 +49,6 @@ export default function HeaderCommon(this: any) {
      for (const genre of genres) {
          options.push({value: genre.name, label: genre.name})
      }
- 
-    //  const defaultOption: any = options[0]
-    
      // #endregion
     
     return (
@@ -63,7 +59,7 @@ export default function HeaderCommon(this: any) {
                         
                 <div className="header-group-1">
 
-                    <Link to="/home">MovieLandia24</Link>
+                    <Link to="/movies">MovieLand24</Link>
                     
                     <ul className="list-nav">
 
@@ -73,7 +69,7 @@ export default function HeaderCommon(this: any) {
                             
                             <li className="special-uppercase" onClick={function (e) {
                                 e.stopPropagation()
-                                navigate(`../home`)
+                                navigate(`../movies`)
                             }}>Movies</li>
 
                         </div>
@@ -99,8 +95,8 @@ export default function HeaderCommon(this: any) {
 
                                                 <li className = "special-list-drop" key={genre.id} onClick={function (e: any) {
                                                     e.stopPropagation()
-                                                    navigate(`/genres/${genre.name}`)
-
+                                                    navigate(`../genres/${genre.name}`)
+                                                    window.location.reload()
                                                 }}>{genre.name}</li>
 
                                             )
@@ -115,20 +111,14 @@ export default function HeaderCommon(this: any) {
 
                         </div>
 
-                        {/* <Select
-                            defaultValue={selectedOption}
-                            onChange={setSelectedOption}
-                            options={options}
-                            className="select-genres"
-                        /> */}
-                        
                         <div className="div-inside-li">
 
                             <img src="/assets/logos/netflix-red.png" alt="" />
                             
                             <li className="special-uppercase" onClick={function (e) {
                                 e.stopPropagation()
-                                navigate(`/genres/NETFLIX`)
+                                navigate(`../genres/NETFLIX`)
+                                window.location.reload()
                             }}>Netflix</li>
                             
                         </div>

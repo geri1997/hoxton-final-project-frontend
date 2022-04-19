@@ -101,35 +101,15 @@ export default function HomePage({validateUser}:any) {
     // #region "Carousel stuff images etc"
     let imagesCopy: any = []
 
-    // if (movies[0].photoSrc !== undefined) {
+    const images = [
+        { source: "/assets/images/movies/rsz_fistful_of_vengeance.png"},
+        { source: "/assets/images/movies/msKnqw1OMiJnQQ7rOFh8Syglxfm-1.jpg"},
+        { source: "/assets/images/movies/rsz_bwwalkuairbi7ntvjkgcui5y1dn.png"},
+        { source: "/assets/images/movies/rsz_wljewwoumhhbw2hxkp8leoqvq1l.png"},
+        { source: "/assets/images/movies/rsz_rlivdea2ezzojlf9xahwz2utu8x.png"}
+    ];
 
-    //     const images = [
-    //         { source: movies[15].photoSrc},
-    //         { source: movies[16].photoSrc},
-    //         { source: movies[17].photoSrc},
-    //         { source: movies[18].photoSrc},
-    //         { source: movies[19].photoSrc}
-    //     ];
-
-    //     // console.log(movies[19].photoSrc)
-    //     imagesCopy = images
-
-    // }
-
-    // else {
-
-        const images = [
-            { source: "/assets/images/movies/rsz_fistful_of_vengeance.png"},
-            { source: "/assets/images/movies/msKnqw1OMiJnQQ7rOFh8Syglxfm-1.jpg"},
-            { source: "/assets/images/movies/rsz_bwwalkuairbi7ntvjkgcui5y1dn.png"},
-            { source: "/assets/images/movies/rsz_wljewwoumhhbw2hxkp8leoqvq1l.png"},
-            { source: "/assets/images/movies/rsz_rlivdea2ezzojlf9xahwz2utu8x.png"}
-        ];
-
-        imagesCopy = images
-
-    // }
-
+    imagesCopy = images
     // #endregion
 
     return (
@@ -147,6 +127,7 @@ export default function HomePage({validateUser}:any) {
                 <div className="home-ribbon-2">
 
                     <h3>Sort By: </h3>
+                    <span className="movie-count-span">Total movies: {moviesCount?.count} </span>
 
                     <ul className="list-sort">
                         {/* <li>Latest movies</li> */}

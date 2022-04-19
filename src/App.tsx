@@ -40,7 +40,6 @@ function App() {
             console.log("Validation failed.");
           } 
           
-          
           else {
             setUser(data);
           }
@@ -60,27 +59,17 @@ function App() {
 
         <Routes>
 
-            <Route index element={<Navigate replace to="/home" />} />
+            <Route index element={<Navigate replace to="/movies" />} />
 
-            <Route path="/home" element={
+            <Route path="/movies" element={
                 //@ts-ignore
                 <HomePage validateUser = {validateUser} />} 
             />
-
-            {/* <Route path="/videos/:id" element={
-                //@ts-ignore
-                <MoviePage validateUser = {validateUser} />} 
-            /> */}
 
             <Route path="/video" element={
                 //@ts-ignore
                 <MoviePage validateUser = {validateUser} />} 
             />
-
-            {/* <Route path="/users/:id" element={
-                //@ts-ignore
-                <ProfilePage validateUser = {validateUser} />} 
-            /> */}
 
             <Route path="/profile" element={
                 //@ts-ignore
@@ -100,11 +89,6 @@ function App() {
                     validateUser = {validateUser}
                 />} 
             />
-
-            {/* <Route path="/genres/:name" element={
-                //@ts-ignore
-                <GenrePage validateUser = {validateUser} />} 
-            /> */}
 
             <Route path="/genres/:name" element={
                 //@ts-ignore
