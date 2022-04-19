@@ -14,20 +14,17 @@ import {
   Routes,
   Route,
   Navigate,
-} from "react-router-dom"
+} from "react-router-dom";
 
-import './App.css'
-import { useStore } from './Zustand/store'
+import "./App.css";
+import { useStore } from "./Zustand/store";
 // #endregion
 
 function App() {
-
-  const { setUser } = useStore()
+  const { setUser } = useStore();
 
   function validateUser() {
-
     if (localStorage.token) {
-
       fetch("http://localhost:4000/validate", {
         headers: {
           Authorization: localStorage.token,
@@ -35,25 +32,27 @@ function App() {
       })
         .then((resp) => resp.json())
         .then((data) => {
-
           if (data.error) {
             console.log("Validation failed.");
-          } 
-          
-          else {
             setUser(data);
           }
-
-      });
-
+        });
     }
-
   }
 
   return (
-
     <>
+      <MoviePage />
+      <Routes>
+        <Route index element={<Navigate replace to="/home" />} />
 
+        <Route
+          path="/home"
+          element={
+            //@ts-ignore
+            <HomePage validateUser={validateUser} />
+          }
+        />
         {addBackToTop()}
 
 
@@ -96,6 +95,8 @@ function App() {
                     validateUser = {validateUser}
                 />} 
             />
+          }
+        />
 
             <Route path="/genres/:name" element={
                 //@ts-ignore
@@ -109,10 +110,16 @@ function App() {
 
         </Routes>
 
+        <Route
+          path="*"
+          element={
+            //@ts-ignore
+            <ErrorPage validateUser={validateUser} />
+          }
+        />
+      </Routes>
     </>
-
-  )
-
+  );
 }
 
-export default App
+export default App;
