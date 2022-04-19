@@ -66,7 +66,7 @@ function App() {
                 <HomePage validateUser = {validateUser} />} 
             />
 
-            <Route path="/video" element={
+            <Route path="/movies/:title" element={
                 //@ts-ignore
                 <MoviePage validateUser = {validateUser} />} 
             />

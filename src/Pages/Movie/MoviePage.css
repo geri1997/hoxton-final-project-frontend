@@ -1,73 +1,94 @@
 .movie-item-wrapper {
   display: grid;
-  grid-template-columns: 2.5fr 1fr;
-  gap: 30px;
+  grid-template-columns: 0.7fr 0.3fr;
+  grid-gap: 30px;
   background-color: rgb(0 60 76);
 }
 
 .left-section {
   display: grid;
-  outline: 2px solid black;
-  margin-left: 60px;
+  place-items: center;
+  /* margin-left: 60px; */
+  grid-gap: 30px;
+  padding-top: 50px;
+  padding-bottom: 100px;
 }
+
+.right-section {
+  padding-top: 80px;
+}
+
+.trailer-link {
+  color: rgb(255, 255, 255);
+  font-size: 14px;
+}
+
 .right-section ul {
   display: grid;
-  outline: 2px solid red;
-  gap: 20px;
+  grid-template-rows: auto;
+  grid-gap: 20px;
 }
+
 .server-list {
   display: grid;
-  grid-auto-flow: column;
+  place-items: center;
+  padding-bottom: 30px;
 }
-.video-square {
-  height: 500px;
-  outline: 2px solid blue;
+
+.server-list li {
+  font-size: 22px;
+  color: #44a7be;
 }
-.video-square img {
-  width: 100%;
-  height: 100%;
-}
+
 .movie-details {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  justify-items: center;
+  grid-template-columns: 1fr;
+  place-items: center;
+  place-content: center;
+  padding-top: 50px;
+  padding-bottom: 30px;
 }
-.title-actors {
-  display: grid;
-  grid-auto-flow: row;
+
+.movie-details li {
+  color: #44a7be;
+  font-size: 16px;
+  font-weight: 700;
 }
-.actors-cast {
-  display: grid;
-  grid-auto-flow: column;
-  gap: 15px;
-}
+
 .trailer {
   display: grid;
-  grid-auto-flow: column;
-  gap: 20px;
+  grid-template-columns: 0.5fr 150px;
+  grid-gap: 20px;
 }
+
 .length {
   display: grid;
-  grid-auto-flow: column;
-  gap: 20px;
+  grid-template-columns: 140px 80px 130px;
+  grid-gap: 10px;
 }
+
 .movie-specifications {
   display: grid;
-  gap: 10px;
+  grid-template-columns: 0.3fr 0.7fr;
+  grid-gap: 20px;
 }
+
 .movie-fabula {
-  border-top: 2px #44a7be;
-  border-bottom: 5px #44a7be;
-  outline: #44a7be;
+  display: grid;
+  place-items: center;
+  place-content: center;
+  padding-top: 30px;
+  padding-bottom: 50px;
 }
 #fabula {
-  color: white;
-  font-size: 17px;
+  color: #44a7be;
+  font-size: 16px;
   display: grid;
-  outline: #44a7be;
+  place-self: center;
   border-top: 2px solid #44a7be;
-  border-left: 2px solid #44a7be;
   border-bottom: 2px solid #44a7be;
+  width: 80%;
+  padding: 20px 0px;
 }
 .last-movies-list {
   display: grid;
@@ -75,18 +96,24 @@
 
   justify-content: center;
   column-gap: 34px;
+  padding-top: 50px;
 }
+
 .last-movies-list img {
-  width: 150px;
-  height: 200px;
-  size-adjust: 20px;
+    height: 250px;
+    width: 150px;
+    cursor: pointer;
 }
+
 .last-movies {
   display: grid;
+  padding-bottom: 20px;
 }
 .posted-lastest h2 {
-  color: white;
+  color: #44a7be;
   padding-left: 10px;
+  padding-top: 20px;
+  padding-bottom: 30px;
 }
 .posted-lastest {
   display: grid;

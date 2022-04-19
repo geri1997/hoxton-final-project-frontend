@@ -65,6 +65,7 @@ export default function GenrePage({validateUser}:any) {
         )    
     
     }
+    // #endregion
 
     return (
 
@@ -85,7 +86,11 @@ export default function GenrePage({validateUser}:any) {
                             //@ts-ignore
                             movies?.map(movie => 
                                 
-                                <div className="movie-item-genre" key={movie.id}>
+                                <div className="movie-item-genre" key={movie.id} onClick={function (e) {
+                                    e.stopPropagation()
+                                    //@ts-ignore
+                                    navigate(`../movies/${ movie.title.split('').map((char) => (char === ' ' ? '-' : char)).join('') }`)
+                                }}>
 
                                     <img src={movie?.photoSrc} />
                                     <span className="movie-title">{movie?.title}</span>

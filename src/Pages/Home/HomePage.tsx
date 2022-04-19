@@ -53,15 +53,6 @@ export default function HomePage({validateUser}:any) {
     // #region "Getting and movies stuff"
     const { movies, setMovies, latestMovies, setLatestMovies, genres, setGenres } = useStore()
 
-    // function getMoviesFromServer(): void {
-
-    //     fetch(`http://localhost:4000/movies`)
-    //     .then(resp => resp.json())
-    //     .then(moviesFromServer => setMovies(moviesFromServer))
-
-    // }
-    // useEffect(getMoviesFromServer, [])
-
     function getMoviesFromServer(pageNr = 0): void {
 
         fetch(`http://localhost:4000/movies/page/${pageNr + 1}`)
@@ -143,7 +134,11 @@ export default function HomePage({validateUser}:any) {
                             //@ts-ignore
                             movies?.map(movie => 
                                 
-                                <div className="movie-item">
+                                <div className="movie-item" key={movie.id} onClick={function (e) {
+                                    e.stopPropagation()
+                                    //@ts-ignore
+                                    navigate(`../movies/${ movie.title.split('').map((char) => (char === ' ' ? '-' : char)).join('') }`)
+                                }}>
 
                                     <img src={movie.photoSrc} />
                                     <span className="movie-title">{movie.title}</span>
@@ -204,7 +199,11 @@ export default function HomePage({validateUser}:any) {
                             //@ts-ignore
                             latestMovies?.map(latestMovie =>
                                 
-                                <div className="movie-item-latest">
+                                <div className="movie-item-latest" key={latestMovie.id} onClick={function (e) {
+                                    e.stopPropagation()
+                                    //@ts-ignore
+                                    navigate(`../movies/${ movie.title.split('').map((char) => (char === ' ' ? '-' : char)).join('') }`)
+                                }}>
 
                                     <img src={latestMovie.photoSrc} />
                                     <span className="movie-title">{latestMovie.title}</span>
