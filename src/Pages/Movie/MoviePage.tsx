@@ -126,6 +126,7 @@ export default function MoviePage({ validateUser }: any) {
                                     <li key={latestMovie.id} onClick={function () {
                                         //@ts-ignore
                                         navigate(`../movies/${ latestMovie.title.split('').map((char) => (char === ' ' ? '-' : char)).join('') }`)
+                                        window.scrollTo(0,0)
                                     }}>
 
                                         <img
