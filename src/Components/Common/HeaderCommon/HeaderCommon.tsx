@@ -122,12 +122,25 @@ export default function HeaderCommon(this: any) {
                         e.preventDefault()
                         //@ts-ignore
                         setSearchTerm(e.target.value)
-                        navigate(`../movies/search/${searchTerm}`)
+                        //@ts-ignore
+                        navigate(`../movies/search/${e.target.searchMovie.value}`)
                     }}>
 
-                        <input type="search" name="searchMovie"  placeholder="Search" aria-label="Search through site content" onChange={function (e) {
-                            setSearchTerm(e.target.value)
+                        <input type="search" name="searchMovie"  placeholder="Search for movies..." aria-label="Search through site content" 
+                        onChange={function (e) {
+
                             navigate(`../movies/search/${e.target.value}`)
+
+                            if (e.target.value.length > 0) {
+                                setSearchTerm(e.target.value)
+                                navigate(`../movies/search/${e.target.value}`)
+                            }
+
+                            else {
+                                setSearchTerm(e.target.value)
+                                navigate(`../movies/search/`)
+                            }
+                            
                         }}/>
 
                         <button type="submit">

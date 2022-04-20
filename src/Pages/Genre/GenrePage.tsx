@@ -115,6 +115,7 @@ export default function GenrePage({validateUser}:any) {
                                     e.stopPropagation()
                                     //@ts-ignore
                                     navigate(`../movies/${ movie.title.split('').map((char) => (char === ' ' ? '-' : char)).join('') }`)
+                                    window.scrollTo(0,0)
                                 }}>
 
                                     <img src={movie?.photoSrc} />
@@ -130,7 +131,7 @@ export default function GenrePage({validateUser}:any) {
                                                 <span key={genre.genre.name} onClick={function (e) {
                                                     e.stopPropagation()
                                                     navigate(`/genres/${genre.genre.name}`)
-
+                                                    window.scrollTo(0,0)
                                                 }}>{genre.genre.name}</span>
                                                 
                                             )

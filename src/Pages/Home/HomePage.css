@@ -20,10 +20,11 @@
     font-weight: 900;
 }
 
-.no-search {
+.home-ribbon-2 .no-search {
     display: grid;
     place-items: center;
     padding-top: 50px;
+    height: auto;
 }
 .movie-item {
     display: grid;
@@ -183,6 +184,7 @@
     display: grid;
     grid-template-rows: 50px 0.1fr 0.1fr auto;
     grid-gap: 20px;
+    height: auto;
     /* place-items: center;
     place-content: center; */
 }

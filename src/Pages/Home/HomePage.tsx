@@ -33,7 +33,7 @@ export default function HomePage({validateUser}:any) {
 
     }
 
-    if (params.query === undefined) {
+    if (params.query === undefined || params.query.length === 0) {
         useEffect(getMovieCountFromServer, [])
     }
 
@@ -68,7 +68,7 @@ export default function HomePage({validateUser}:any) {
     function getMoviesFromServer(): void {
 
         //@ts-ignore
-        if (params.page === undefined && params.query === undefined) {
+        if (params.page === undefined && ( params.query === undefined || params.query.length === 0 ) ) {
 
             fetch(`http://localhost:4000/movies/page/1`)
             .then(resp => resp.json())
@@ -77,7 +77,7 @@ export default function HomePage({validateUser}:any) {
         }
 
         //@ts-ignore
-        else if(params.page && params.query === undefined) {
+        else if(params.page && ( params.query === undefined || params.query.length === 0) ) {
             
             fetch(`http://localhost:4000/movies/page/${params.page}`)
             .then(resp => resp.json())
@@ -103,11 +103,11 @@ export default function HomePage({validateUser}:any) {
 
     }
 
-    if (params.page === undefined && params.query === undefined) {
+    if (params.page === undefined && ( params.query === undefined || params.query.length === 0 ) ) {
         useEffect(getMoviesFromServer, [params.page])
     }
 
-    else if (params.page && params.query === undefined) {
+    else if (params.page && ( params.query === undefined || params.query.length === 0 ) ) {
         useEffect(getMoviesFromServer, [params.page])
     }
 
@@ -128,7 +128,7 @@ export default function HomePage({validateUser}:any) {
 
 
     // #region "Checking stuff wich came from server"
-    if (movies[0]?.title === undefined && movies?.length > 0) {
+    if (movies[0]?.title === undefined && !movies) {
 
         return (
             <div className="loading-wrapper">
@@ -137,6 +137,30 @@ export default function HomePage({validateUser}:any) {
         )    
     
     }
+
+    else if (movies?.length === 0) {
+
+        return (
+            
+            <div className="home-wrapper-menus">
+
+                <HeaderCommon />
+
+                <div className="home-ribbon-2">
+
+                    <div className="no-search">
+                        <span>No Search Result, no movie found with that criteria.</span>
+                    </div>
+
+                </div>
+
+                <FooterCommon />
+
+            </div>
+
+        )
+
+    }
     // #endregion
 
 
@@ -144,14 +168,21 @@ export default function HomePage({validateUser}:any) {
     function getImages() {
 
         let images: any = []
+        // let moviesNew = [...movies]
 
-        return images = [
-            { source: movies[0]?.photoSrc},
-            { source: movies[5]?.photoSrc},
-            { source: movies[10]?.photoSrc},
-            { source: movies[15]?.photoSrc},
-            { source: movies[7]?.photoSrc}
-        ];
+        if ( movies.length !== 0 && movies[0]?.title !== undefined ) {
+            
+            console.log(movies)
+
+            return images = [
+                { source: movies[0]?.photoSrc! },
+                { source: movies[1]?.photoSrc! },
+                { source: movies[2]?.photoSrc! },
+                { source: movies[3]?.photoSrc! },
+                { source: movies[4]?.photoSrc! }
+            ];
+
+        }
 
     }
     // #endregion
@@ -164,7 +195,7 @@ export default function HomePage({validateUser}:any) {
 
                 <HeaderCommon />
 
-                { (params.query === undefined || params.query === "") && movies[0]?.title !== undefined ? (
+                { ( params.query === undefined || params.query.length === 0 ) && movies[0]?.title != undefined ? (
                     
                     <div className="home-ribbon-1">
                         {/* @ts-ignore */}
@@ -177,13 +208,13 @@ export default function HomePage({validateUser}:any) {
 
                     {/* <h3>Sort By: </h3> */}
 
-                    { (params.query === undefined || params.query === "") ? (
+                    { ( params.query === undefined || params.query.length === 0 ) ? (
                         <span className="movie-count-span">Total movies: {moviesCount?.count} </span>
                     ): (
                         <span className="movie-count-span">Total movies: {movies?.length} </span>
                     ) }
 
-                    { (params.query === undefined || params.query === "") ? (
+                    { (params.query === undefined || params.query.length === 0) ? (
 
                         <>
 
@@ -212,6 +243,7 @@ export default function HomePage({validateUser}:any) {
                                     e.stopPropagation()
                                     //@ts-ignore
                                     navigate(`../movies/${ movie.title.split('').map((char) => (char === ' ' ? '-' : char)).join('') }`)
+                                    window.scrollTo(0,0)
                                 }}>
 
                                     <img src={movie.photoSrc} />
@@ -227,7 +259,7 @@ export default function HomePage({validateUser}:any) {
                                                 <span key={genre.genre.name} onClick={function (e) {
                                                     e.stopPropagation()
                                                     navigate(`/genres/${genre.genre.name}`)
-
+                                                    window.scrollTo(0,0)
                                                 }}>{genre.genre.name}</span>
 
                                             )
@@ -249,12 +281,12 @@ export default function HomePage({validateUser}:any) {
                     ): (
 
                         <div className="no-search">
-                            <span>No Search Result</span>
+                            <span>No Search Result, no movie found with that criteria.</span>
                         </div>
 
                     ) }
 
-                    { (params.query === undefined || params.query === "") ? (
+                    { (params.query === undefined || params.query.length === 0) ? (
 
                         <ReactPaginate
                             previousLabel={"< Previous"}
@@ -272,7 +304,7 @@ export default function HomePage({validateUser}:any) {
 
                 </div>
 
-                { (params.query === undefined || params.query === "") && movies?.length !== 0 ? (
+                { (params.query === undefined || params.query.length === 0) && movies?.length !== 0 ? (
 
                     <div className="home-ribbon-3">
 
@@ -291,6 +323,7 @@ export default function HomePage({validateUser}:any) {
                                         e.stopPropagation()
                                         //@ts-ignore
                                         navigate(`../movies/${ latestMovie.title.split('').map((char) => (char === ' ' ? '-' : char)).join('') }`)
+                                        window.scrollTo(0,0)
                                     }}>
 
                                         <img src={latestMovie.photoSrc} />
@@ -306,7 +339,7 @@ export default function HomePage({validateUser}:any) {
                                                     <span key={genre.genre.name} onClick={function (e) {
                                                         e.stopPropagation()
                                                         navigate(`/genres/${genre.genre.name}`)
-
+                                                        window.scrollTo(0,0)
                                                     }}>{genre.genre.name}</span>
                                                     
                                                 )
