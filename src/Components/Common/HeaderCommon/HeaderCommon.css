@@ -71,6 +71,17 @@ header.header .header-group-1 ul.list-nav li.special-uppercase {
 
 }
 
+header.header .header-group-1 ul.list-nav a.special-uppercase {
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  text-transform: uppercase;
+  font-family: Roboto;
+  cursor: pointer;
+  padding-bottom: 1px;
+
+}
+
 ul .special-list-drop {
   text-transform: capitalize;
   font-size: 16px;

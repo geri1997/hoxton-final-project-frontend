@@ -4,16 +4,22 @@ import { useCallback, useEffect, useState } from "react";
 import ReactLoading from "react-loading";
 import ReactPaginate from "react-paginate";
 import { useNavigate, useParams } from "react-router";
+import { Link, NavLink } from "react-router-dom";
 import FooterCommon from "../../Components/Common/FooterCommon/FooterCommon";
 import HeaderCommon from "../../Components/Common/HeaderCommon/HeaderCommon";
 import { useStore } from "../../Zustand/store";
 import "./HomePage.css"
 // #endregion
 
+
 export default function HomePage({validateUser}:any) {
 
+
+    // #region "Hooks for navigate and params"
     const navigate = useNavigate()
     const params = useParams()
+    // #endregion
+
 
     // #region "Validating user if its logged in in each page, localstorage way"
     useEffect(() => {
@@ -44,6 +50,7 @@ export default function HomePage({validateUser}:any) {
 
 
     // #region "Pagination in frontend"
+
     const [pageNumber, setPageNumber] = useState(0)
     const [itemsPerPage, setItemsPerPage] = useState(20)
 
@@ -55,20 +62,31 @@ export default function HomePage({validateUser}:any) {
     }
     
     const changePage = ({ selected }:any) => {
-        handleChangingPageNumber(selected)
-        navigate(`../movies/page/${selected + 1}`)
-        // getMoviesFromServer(selected)
+
+        if (params.sort === undefined) {
+            handleChangingPageNumber(selected)
+            navigate(`../movies/page/${selected + 1}`)
+        }
+
+        else {
+            handleChangingPageNumber(selected)
+            navigate(`../movies/sortBy/${params.sort}/page/${selected + 1}`)
+        }
+
     }
+
     // #endregion
 
 
     // #region "Getting and movies stuff"
-    const { movies, setMovies, latestMovies, setLatestMovies, genres, setGenres, searchTerm, setSearchTerm } = useStore()
+
+    const { movies, setMovies, latestMovies, setLatestMovies } = useStore()
+
 
     function getMoviesFromServer(): void {
 
         //@ts-ignore
-        if (params.page === undefined && ( params.query === undefined || params.query.length === 0 ) ) {
+        if ( params.page === undefined && ( params.query === undefined || params.query.length === 0 ) && params.sort === undefined ) {
 
             fetch(`http://localhost:4000/movies/page/1`)
             .then(resp => resp.json())
@@ -77,7 +95,7 @@ export default function HomePage({validateUser}:any) {
         }
 
         //@ts-ignore
-        else if(params.page && ( params.query === undefined || params.query.length === 0) ) {
+        else if ( params.page && ( params.query === undefined || params.query.length === 0 ) && params.sort === undefined ) {
             
             fetch(`http://localhost:4000/movies/page/${params.page}`)
             .then(resp => resp.json())
@@ -85,7 +103,7 @@ export default function HomePage({validateUser}:any) {
 
         }
 
-        else if(params.page === undefined && params.query) {
+        else if ( params.page === undefined && params.query && params.sort === undefined ) {
             
             fetch(`http://localhost:4000/search`, {
                 method: "POST",
@@ -101,18 +119,45 @@ export default function HomePage({validateUser}:any) {
 
         }
 
+        //@ts-ignore
+        else if (params.page === undefined && ( params.query === undefined || params.query.length === 0 ) && params.sort ) {
+
+            fetch(`http://localhost:4000/movies/page/1?sortBy=${params.sort}&ascOrDesc=desc`)
+            .then(resp => resp.json())
+            .then(moviesFromServer => setMovies(moviesFromServer))
+
+        }
+
+        //@ts-ignore
+        else if(params.page && ( params.query === undefined || params.query.length === 0) && params.sort ) {
+            
+            fetch(`http://localhost:4000/movies/page/${params.page}?sortBy=${params.sort}&ascOrDesc=desc`)
+            .then(resp => resp.json())
+            .then(moviesFromServer => setMovies(moviesFromServer))
+
+        }
+
     }
 
-    if (params.page === undefined && ( params.query === undefined || params.query.length === 0 ) ) {
+
+    if ( params.page === undefined && ( params.query === undefined || params.query.length === 0 ) && params.sort === undefined ) {
         useEffect(getMoviesFromServer, [params.page])
     }
 
-    else if (params.page && ( params.query === undefined || params.query.length === 0 ) ) {
+    else if ( params.page && ( params.query === undefined || params.query.length === 0 ) && params.sort === undefined ) {
         useEffect(getMoviesFromServer, [params.page])
     }
 
-    else if (params.page === undefined && params.query) {
+    else if ( params.page === undefined && params.query && params.sort === undefined ) {
         useEffect(getMoviesFromServer, [params.query])
+    }
+
+    else if ( params.page === undefined && params.query === undefined && params.sort ) {
+        useEffect(getMoviesFromServer, [params.sort])
+    }
+
+    else if ( params.page && params.query === undefined && params.sort ) {
+        useEffect(getMoviesFromServer, [params.page])
     }
 
     function getLatestMoviesFromServer(): void {
@@ -124,6 +169,7 @@ export default function HomePage({validateUser}:any) {
     }
 
     useEffect(getLatestMoviesFromServer, [])
+
     // #endregion
 
 
@@ -165,6 +211,7 @@ export default function HomePage({validateUser}:any) {
 
 
     // #region "Carousel stuff images etc"
+    
     function getImages() {
 
         let images: any = []
@@ -196,6 +243,7 @@ export default function HomePage({validateUser}:any) {
     
     // #endregion
 
+
     return (
 
         <>
@@ -204,172 +252,206 @@ export default function HomePage({validateUser}:any) {
 
                 <HeaderCommon />
 
-                { ( params.query === undefined || params.query.length === 0 ) && movies[0]?.title != undefined ? (
-                    
-                    <div className="home-ribbon-1">
-                        {/* @ts-ignore */}
-                        <Carousel views={images}/>
-                    </div>
+                { 
+                
+                    ( params.query === undefined || params.query.length === 0 ) && movies[0]?.title !== undefined ? (
+                        
+                        <div className="home-ribbon-1">
+                            {/* @ts-ignore */}
+                            <Carousel views={images}/>
+                        </div>
 
-                ): null }
+                    ): null 
+                    
+                }
 
                 <div className="home-ribbon-2">
 
-                    {/* <h3>Sort By: </h3> */}
+                    { 
 
-                    { ( params.query === undefined || params.query.length === 0 ) ? (
-                        <span className="movie-count-span">Total movies: {moviesCount?.count} </span>
-                    ): (
-                        <span className="movie-count-span">Total movies: {movies?.length} </span>
-                    ) }
-
-                    { (params.query === undefined || params.query.length === 0) ? (
-
-                        <>
-
-                            <h3>Sort By: </h3>
-
-                            <ul className="list-sort">
-                                <li>Most viewed</li>
-                                <li>Imdb</li>
-                                <li>A-Z</li>
-                            </ul>
-
-                        </>
-
-                    ): null }
-                    
-                    { movies?.length !== 0 ? (
-
-                         <div className="image-ribbon-2-wrapper">
-
-                        {
-                            
-                            //@ts-ignore
-                            movies?.map(movie => 
-                                
-                                <div className="movie-item" key={movie.id} onClick={function (e) {
-                                    e.stopPropagation()
-                                    //@ts-ignore
-                                    navigate(`../movies/${ movie.title.split('').map((char) => (char === ' ' ? '-' : char)).join('') }`)
-                                    window.scrollTo(0,0)
-                                }}>
-
-                                    <img src={movie.photoSrc} />
-                                    <span className="movie-title">{movie.title}</span>
-
-                                    <div className="genres-holder-span">
-
-                                        {
-
-                                            //@ts-ignore
-                                            movie.genres.map(genre => 
-
-                                                <span key={genre.genre.name} onClick={function (e) {
-                                                    e.stopPropagation()
-                                                    navigate(`/genres/${genre.genre.name}`)
-                                                    window.scrollTo(0,0)
-                                                }}>{genre.genre.name}</span>
-
-                                            )
-
-                                        }
-                                        
-                                    </div>
-
-                                    <span className="imdb-span">{ movie.ratingImdb !== 0 ? "Imdb: " + movie.ratingImdb : "Imdb: " + "N/A" }</span>
-
-                                </div>
-
-                            )
-
-                        }
-
-                        </div>
-
-                    ): (
-
-                        <div className="no-search">
-                            <span>No Search Result, no movie found with that criteria.</span>
-                        </div>
-
-                    ) }
-
-                    { (params.query === undefined || params.query.length === 0) ? (
-
-                        <ReactPaginate
-                            previousLabel={"< Previous"}
-                            nextLabel={"Next >"}
-                            pageCount={pageCount}
-                            onPageChange={changePage}
-                            containerClassName={"paginationBttns"}
-                            previousLinkClassName={"previousBttn"}
-                            nextLinkClassName={"nextBttn"}
-                            disabledClassName={"paginationDisabled"}
-                            activeClassName={"paginationActive"}
-                        />
-
-                    ): null }
-
-                </div>
-
-                { (params.query === undefined || params.query.length === 0) && movies?.length !== 0 ? (
-
-                    <div className="home-ribbon-3">
-
-                        <ul className="list-latest">
-                            <li className="special-last">LATEST MOVIES</li>
-                        </ul>
+                        ( params.query === undefined || params.query.length === 0 ) ? (
+                            <span className="movie-count-span">Total movies: {moviesCount?.count} </span>
+                        ): 
                         
-                        <div className="image-ribbon-3-wrapper">
+                        (
+                            <span className="movie-count-span">Total movies: {movies?.length} </span>
+                        ) 
+
+                    }
+
+                    { 
+                    
+                        ( params.query === undefined || params.query.length === 0 ) ? (
+
+                            <>
+
+                                <h3>Sort By: </h3>
+
+                                <ul className="list-sort">
+
+                                    <Link to="/movies/sortBy/views" >Most viewed (Desc)</Link>
+
+                                    <Link to="/movies/sortBy/ratingImdb" >Imdb rating (Desc)</Link>
+
+                                    <Link to="/movies/sortBy/title" >A-Z (Desc)</Link>
+
+                                </ul>
+
+                            </>
+
+                        ): null 
+                        
+                    }
+                    
+                    { 
+                    
+                        movies?.length !== 0 ? (
+
+                            <div className="image-ribbon-2-wrapper">
 
                             {
-
+                                
                                 //@ts-ignore
-                                latestMovies?.map(latestMovie =>
+                                movies?.map(movie => 
                                     
-                                    <div className="movie-item-latest" key={latestMovie.id} onClick={function (e) {
+                                    <div className="movie-item" key={movie.id} onClick={function (e) {
                                         e.stopPropagation()
                                         //@ts-ignore
-                                        navigate(`../movies/${ latestMovie.title.split('').map((char) => (char === ' ' ? '-' : char)).join('') }`)
+                                        navigate(`../movies/${ movie.title.split('').map((char) => (char === ' ' ? '-' : char)).join('') }`)
                                         window.scrollTo(0,0)
                                     }}>
 
-                                        <img src={latestMovie.photoSrc} />
-                                        <span className="movie-title">{latestMovie.title}</span>
-                                        
+                                        <img src={movie.photoSrc} />
+                                        <span className="movie-title">{movie.title}</span>
+
                                         <div className="genres-holder-span">
 
                                             {
 
                                                 //@ts-ignore
-                                                latestMovie.genres.map(genre => 
+                                                movie.genres.map(genre => 
 
                                                     <span key={genre.genre.name} onClick={function (e) {
+
                                                         e.stopPropagation()
                                                         navigate(`/genres/${genre.genre.name}`)
                                                         window.scrollTo(0,0)
+
                                                     }}>{genre.genre.name}</span>
-                                                    
+
                                                 )
 
                                             }
-
+                                            
                                         </div>
 
-                                        <span className="imdb-span">{ latestMovie.ratingImdb !== 0 ? "Imdb: " + latestMovie.ratingImdb : null }</span>
-                                        
+                                        <span className="imdb-span">{ movie.ratingImdb !== 0 ? "Imdb: " + movie.ratingImdb : "Imdb: " + "N/A" }</span>
+
                                     </div>
 
                                 )
 
                             }
 
-                        </div>
-                    
-                    </div>
+                            </div>
 
-                ): null }
+                        ): (
+
+                            <div className="no-search">
+                                <span>No Search Result, no movie found with that criteria.</span>
+                            </div>
+
+                        ) 
+                        
+                    }
+
+                    { 
+                    
+                        ( params.query === undefined || params.query.length === 0 ) ? (
+
+                            <ReactPaginate
+                                previousLabel={"< Previous"}
+                                nextLabel={"Next >"}
+                                pageCount={pageCount}
+                                onPageChange={changePage}
+                                containerClassName={"paginationBttns"}
+                                previousLinkClassName={"previousBttn"}
+                                nextLinkClassName={"nextBttn"}
+                                disabledClassName={"paginationDisabled"}
+                                activeClassName={"paginationActive"}
+                            />
+
+                        ): null 
+                        
+                    }
+
+                </div>
+
+                { 
+                
+                    ( params.query === undefined || params.query.length === 0 ) && movies?.length !== 0 ? (
+
+                        <div className="home-ribbon-3">
+
+                            <ul className="list-latest">
+                                <li className="special-last">LATEST MOVIES</li>
+                            </ul>
+                            
+                            <div className="image-ribbon-3-wrapper">
+
+                                {
+
+                                    //@ts-ignore
+                                    latestMovies?.map(latestMovie =>
+                                        
+                                        <div className="movie-item-latest" key={latestMovie.id} onClick={function (e) {
+
+                                            e.stopPropagation()
+                                            //@ts-ignore
+                                            navigate(`../movies/${ latestMovie.title.split('').map((char) => (char === ' ' ? '-' : char)).join('') }`)
+                                            window.scrollTo(0,0)
+
+                                        }}>
+
+                                            <img src={latestMovie.photoSrc} />
+                                            <span className="movie-title">{latestMovie.title}</span>
+                                            
+                                            <div className="genres-holder-span">
+
+                                                {
+
+                                                    //@ts-ignore
+                                                    latestMovie.genres.map(genre => 
+
+                                                        <span key={genre.genre.name} onClick={function (e) {
+
+                                                            e.stopPropagation()
+                                                            navigate(`/genres/${genre.genre.name}`)
+                                                            window.scrollTo(0,0)
+
+                                                        }}>{genre.genre.name}</span>
+                                                        
+                                                    )
+
+                                                }
+
+                                            </div>
+
+                                            <span className="imdb-span">{ latestMovie.ratingImdb !== 0 ? "Imdb: " + latestMovie.ratingImdb : null }</span>
+                                            
+                                        </div>
+
+                                    )
+
+                                }
+
+                            </div>
+                        
+                        </div>
+
+                    ): null 
+                    
+                }
 
                 <FooterCommon />
 

@@ -20,8 +20,11 @@ import './App.css'
 import { useStore } from './Zustand/store'
 // #endregion
 
+
 function App() {
 
+
+  // #region "Validating user fucntion"
   const { setUser } = useStore()
 
   function validateUser() {
@@ -49,29 +52,39 @@ function App() {
     }
 
   }
+  // #endregion
+
 
   return (
 
     <>
 
-        {addBackToTop()}
-
+        { addBackToTop() }
 
         <Routes>
 
+
+            {
+                //#region "Default routes"
+            }
+
             <Route index element={<Navigate replace to="/movies" />} />
 
+            <Route path="*" element={
+                //@ts-ignore
+                <ErrorPage validateUser = {validateUser} />} 
+            />
+
+            {
+                //#endregion
+            }
+
+            
+            {
+                //#region "Movies Routes with pagination with TITLE params and individual Movie" 
+            }
+
             <Route path="/movies" element={
-                //@ts-ignore
-                <HomePage validateUser = {validateUser} />} 
-            />
-
-            <Route path="/movies/search/:query" element={
-                //@ts-ignore
-                <HomePage validateUser = {validateUser} />} 
-            />
-
-            <Route path="/movies/search/" element={
                 //@ts-ignore
                 <HomePage validateUser = {validateUser} />} 
             />
@@ -86,20 +99,61 @@ function App() {
                 <MoviePage validateUser = {validateUser} />} 
             />
 
+            {
+                //#endregion 
+            }
+
+            
+            {
+                 //#region "Movies Routes with pagination and SEARCH params"
+            }
+
+            <Route path="/movies/search/:query" element={
+                //@ts-ignore
+                <HomePage validateUser = {validateUser} />} 
+            />
+
+            <Route path="/movies/search/" element={
+                //@ts-ignore
+                <HomePage validateUser = {validateUser} />} 
+            />
+
+            {
+                // #endregion
+            }
+
+
+            {
+                 //#region "Movies Routes with pagination and SORT params"
+            }
+
+            <Route path="/movies/sortBy/:sort" element={
+                //@ts-ignore
+                <HomePage validateUser = {validateUser} />} 
+            />
+
+            <Route path="/movies/sortBy/:sort/page/:page" element={
+                //@ts-ignore
+                <HomePage validateUser = {validateUser} />} 
+            />
+
+            {
+                //#endregion
+            }
+
+
+            {
+                //#region "Login, Registration, Profile Routes"
+            }
+
             <Route path="/profile" element={
                 //@ts-ignore
                 <ProfilePage validateUser = {validateUser} />} 
             />
 
+
             <Route path="/login" element={
                 <LoginPage 
-                    //@ts-ignore
-                    validateUser = {validateUser}
-                />} 
-            />
-
-            <Route path="/genres/:name/page/:page" element={
-                <GenrePage
                     //@ts-ignore
                     validateUser = {validateUser}
                 />} 
@@ -112,15 +166,31 @@ function App() {
                 />} 
             />
 
+            {
+                //#endregion
+            }
+
+
+            {
+                //#region "Genres Routes with pagination and NAME params"
+            }
+
             <Route path="/genres/:name" element={
                 //@ts-ignore
                 <GenrePage validateUser = {validateUser} />} 
             />
 
-            <Route path="*" element={
-                //@ts-ignore
-                <ErrorPage validateUser = {validateUser} />} 
+            <Route path="/genres/:name/page/:page" element={
+                <GenrePage
+                    //@ts-ignore
+                    validateUser = {validateUser}
+                />} 
             />
+
+            {
+                //#endregion
+            }
+
 
         </Routes>
 

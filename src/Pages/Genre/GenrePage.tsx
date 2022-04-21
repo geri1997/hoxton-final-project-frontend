@@ -9,12 +9,17 @@ import { useStore } from "../../Zustand/store"
 import "./GenrePage.css"
 // #endregion
 
+
 export default function GenrePage({validateUser}:any) {
 
+    
+    // #region "State and react hooks"
     const params = useParams()
     const navigate = useNavigate()
 
     const { movies, setMovies } = useStore()
+    // #endregion
+
 
     // #region "Validating user if its logged in in each page, localstorage way"
     useEffect(() => {
@@ -92,6 +97,7 @@ export default function GenrePage({validateUser}:any) {
     }
     // #endregion
 
+
     return (
 
         <>
@@ -111,11 +117,13 @@ export default function GenrePage({validateUser}:any) {
                             //@ts-ignore
                             movies?.map(movie => 
                                 
-                                <div className="movie-item-genre" key={movie.id} onClick={function (e) {
+                                <div className="movie-item-genre" key={movie.id} onClick={ function (e) {
+
                                     e.stopPropagation()
                                     //@ts-ignore
                                     navigate(`../movies/${ movie.title.split('').map((char) => (char === ' ' ? '-' : char)).join('') }`)
                                     window.scrollTo(0,0)
+
                                 }}>
 
                                     <img src={movie?.photoSrc} />
@@ -128,10 +136,12 @@ export default function GenrePage({validateUser}:any) {
                                             //@ts-ignore
                                             movie?.genres.map(genre => 
 
-                                                <span key={genre.genre.name} onClick={function (e) {
+                                                <span key={genre.genre.name} onClick={ function (e) {
+
                                                     e.stopPropagation()
                                                     navigate(`/genres/${genre.genre.name}`)
                                                     window.scrollTo(0,0)
+
                                                 }}>{genre.genre.name}</span>
                                                 
                                             )
