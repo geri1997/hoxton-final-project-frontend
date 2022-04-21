@@ -1,23 +1,31 @@
-import { useEffect } from "react";
-import ReactLoading from "react-loading";
+// #region "Importing"
 import { useNavigate, useParams } from "react-router-dom";
 import FooterCommon from "../../Components/Common/FooterCommon/FooterCommon";
+import ReactLoading from "react-loading";
 import HeaderCommon from "../../Components/Common/HeaderCommon/HeaderCommon";
 import { useStore } from "../../Zustand/store";
+import { useEffect } from "react";
 import "./MoviePage.css";
+// #endregion
+
 
 export default function MoviePage({ validateUser }: any) {
 
+
+    // #region "State and other hooks"
     const params = useParams()
     const navigate = useNavigate()
 
-    const { movieItem, setMovieItem, latestMovies, setLatestMovies } = useStore()
+    const { movieItem, setMovieItem, latestMovies, setLatestMovies, setUser } = useStore()
+    // #endregion
+
 
     // #region "Validating user if its logged in in each page, localstorage way"
     useEffect(() => {
         validateUser();
     }, []);
     // #endregion
+
 
     // #region "Getting and movies stuff"
     function getMovieItemFromServer(): void {
@@ -42,6 +50,33 @@ export default function MoviePage({ validateUser }: any) {
     useEffect(getLatestMoviesFromServer, [])
     // #endregion
     
+
+    // #region "Adding to favorites feature"
+    function addToFavorites() {
+        
+        fetch(`http://localhost:4000/favorites`, {
+
+            method: "POST",
+
+            headers: {
+                "content-type": "application/json",
+                Authorization: localStorage.token
+            },
+
+            body: JSON.stringify({
+                movieId: movieItem?.id
+            })
+
+        })
+        .then(resp => resp.json())
+        .then(data => {
+            setUser(data)
+        })
+
+    }
+    // #endregion
+
+
     // #region "Checking stuff wich came from server"
     if (movieItem?.title === null) {
 
@@ -54,6 +89,7 @@ export default function MoviePage({ validateUser }: any) {
     }
     // #endregion
     
+
     return (
 
         <>
@@ -91,10 +127,19 @@ export default function MoviePage({ validateUser }: any) {
                                 </ul>
 
                                 <ul className="length">
+
                                     <li>Duration: {movieItem?.duration}</li>
                                     <li>Year: {movieItem?.releaseYear}</li>
-                                    <li>Imdb Rating: {movieItem?.ratingImdb}</li>
+                                    <li>Imdb Rating: {movieItem?.ratingImdb === 0 ? "N/A" : movieItem?.ratingImdb}</li>
+                                
                                 </ul>
+
+                                <button className="button-favorite-add" onClick={function () {
+                                    addToFavorites()
+                                    navigate("/profile")
+                                }}>
+                                    Add to favorites
+                                </button>
 
                             </div>
 
@@ -150,15 +195,7 @@ export default function MoviePage({ validateUser }: any) {
                     <ul>
 
                         <li>
-                            <img src="https://www.filma24.so/kazinodhjetor.gif" alt="ggg" />
-                        </li>
-
-                        <li>
                             <img src="https://i.imgur.com/5wdcyDG.gif" alt="ddf" />
-                        </li>
-
-                        <li>
-                            <img src="https://www.filma24.so/genti300x300.gif" alt="sss" />
                         </li>
 
                         <li>

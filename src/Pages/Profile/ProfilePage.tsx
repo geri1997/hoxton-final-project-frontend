@@ -29,6 +29,7 @@ export default function ProfilePage({validateUser}:any) {
     // }
     
     // useEffect(getIndividualUserFromServer, [])
+
     // #endregion
 
     // #region "Checking stuff from server wich came and loading"
@@ -77,7 +78,7 @@ export default function ProfilePage({validateUser}:any) {
                         {/* <img src={`http://localhost:4000/avatar/${userItem.userName}`} /> */}
                         {/* <span className="subscribe-span">{userItem.countSubscribers} Subscribers</span>
                         <span className="userName-span">{userItem.userName}</span> */}
-                        <span className="userName-span">Avenger22</span>
+                        <span className="userName-span">{user.userName}</span>
 
                     </div>
 
@@ -107,24 +108,25 @@ export default function ProfilePage({validateUser}:any) {
 
                                 <div className="container-videos">
 
-                                    {
+                                    
+                                    <ul className='favorite-movies'>
 
-                                        // @ts-ignore
-                                        // user?.videos?.map(video => 
+                                        { 
+                                        
+                                            //@ts-ignore
+                                            user?.favMovies.map(movie => 
 
-                                            // <HomeVideo 
-                                            //     key = {video.id}
-                                            //     video = {null}
-                                            //     liked = {"not"}
-                                            //     videoLiked = {null}
-                                            //     videoSaved = {null}
-                                            //     user = {user}
-                                            //     videoMine = {video}
-                                            // />
+                                                <li className='movie-fav'>
+                                                    <img src={movie.photoSrc} />
+                                                    {movie.title}
+                                                    {movie.releaseYear}
+                                                </li>
+                                        
+                                            )
+                                            
+                                        }
 
-                                        // )
-
-                                    }
+                                    </ul>
 
                                 </div>
 
