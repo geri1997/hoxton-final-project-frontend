@@ -6,6 +6,8 @@ import RegisterPage from './Pages/Register/RegisterPage'
 import GenrePage from './Pages/Genre/GenrePage'
 import ProfilePage from './Pages/Profile/ProfilePage'
 import ErrorPage from './Pages/Error/ErrorPage'
+import GenreCategoriesPage from './Pages/Genre/GenreCategoriesPage'
+
 //@ts-ignore
 import { addBackToTop } from 'vanilla-back-to-top'
 
@@ -174,6 +176,11 @@ function App() {
             {
                 //#region "Genres Routes with pagination and NAME params"
             }
+
+            <Route path="/genres" element={
+                //@ts-ignore
+                <GenreCategoriesPage validateUser = {validateUser} />} 
+            />
 
             <Route path="/genres/:name" element={
                 //@ts-ignore

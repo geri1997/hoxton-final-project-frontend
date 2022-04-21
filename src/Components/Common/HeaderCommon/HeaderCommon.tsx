@@ -22,7 +22,7 @@ export default function HeaderCommon(this: any) {
         navigate(`../profile`);
     }
 
-     // #region "DropDown stuff"
+     // #region "DropDown and getting genres from server stuff"
      function getGenresFromServer(): void {
 
       fetch(`http://localhost:4000/genres`)
@@ -67,7 +67,11 @@ export default function HeaderCommon(this: any) {
                                 <div className="genre-drop">
 
                                     <img src="/assets/logos/list_blu.png" alt="" />
-                                    <li className="special-uppercase">Genres</li>
+                                    
+                                    <li className="special-uppercase" onClick={function (e) {
+                                        e.stopPropagation()
+                                        navigate("../genres")
+                                    }}>Genres</li>
 
                                 </div>
                     
@@ -80,9 +84,10 @@ export default function HeaderCommon(this: any) {
                                             genres.map(genre => 
 
                                                 <li className = "special-list-drop" key={genre.id} onClick={function (e: any) {
+                                                    
                                                     e.stopPropagation()
                                                     navigate(`../genres/${genre.name}`)
-                                                    // window.location.reload()
+                                                
                                                 }}>{genre.name}</li>
 
                                             )
@@ -187,7 +192,7 @@ export default function HeaderCommon(this: any) {
 
                             </div>
 
-                          )}
+                        )}
 
                 </div>
 

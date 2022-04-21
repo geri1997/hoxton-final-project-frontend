@@ -174,7 +174,7 @@ export default function HomePage({validateUser}:any) {
 
 
     // #region "Checking stuff wich came from server"
-    if (movies[0]?.title === undefined && !movies) {
+    if (!movies && movies[0]?.title === undefined) {
 
         return (
             <div className="loading-wrapper">
@@ -195,7 +195,7 @@ export default function HomePage({validateUser}:any) {
                 <div className="home-ribbon-2">
 
                     <div className="no-search">
-                        <span>No Search Result, no movie found with that criteria.</span>
+                        <span>No Search Result or the array is getting populated.</span>
                     </div>
 
                 </div>
@@ -293,7 +293,7 @@ export default function HomePage({validateUser}:any) {
 
                                     <Link to="/movies/sortBy/ratingImdb" >Imdb rating (Desc)</Link>
 
-                                    <Link to="/movies/sortBy/title" >A-Z (Desc)</Link>
+                                    <Link to="/movies/sortBy/title" >Title (Desc)</Link>
 
                                 </ul>
 
