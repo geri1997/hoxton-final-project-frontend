@@ -24,7 +24,7 @@ export default function RegisterPage({validateUser}:any) {
     }, [])
   
     if (user) {
-        navigate("/home")
+        navigate("/movies")
     }
     
     return (

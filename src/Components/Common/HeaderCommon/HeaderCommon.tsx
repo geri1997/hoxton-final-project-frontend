@@ -19,7 +19,7 @@ export default function HeaderCommon(this: any) {
 
     function redirectToProfile(user: any) {
         // navigate(`../users/${user.id}`);
-        navigate(`../users/${user.userName}`);
+        navigate(`../profile`);
     }
 
      // #region "DropDown stuff"
@@ -56,10 +56,7 @@ export default function HeaderCommon(this: any) {
 
                             <img src="/assets/logos/ico_filma_blu.png" alt="" />
                             
-                            <li className="special-uppercase" onClick={function (e) {
-                                e.stopPropagation()
-                                navigate(`../movies`)
-                            }}>Movies</li>
+                            <NavLink to = "../movies" className="special-uppercase" >Movies</NavLink>
 
                         </div>
 
@@ -104,11 +101,7 @@ export default function HeaderCommon(this: any) {
 
                             <img src="/assets/logos/netflix-red.png" alt="" />
                             
-                            <li className="special-uppercase" onClick={function (e) {
-                                e.stopPropagation()
-                                navigate(`../genres/NETFLIX`)
-                                // window.location.reload()
-                            }}>Netflix</li>
+                            <NavLink to ="../genres/NETFLIX" className="special-uppercase" >Netflix</NavLink>
                             
                         </div>
 
@@ -119,11 +112,13 @@ export default function HeaderCommon(this: any) {
                 <div className="header-group-2">
                     
                     <form className="button-search" onSubmit={function (e) {
+                        
                         e.preventDefault()
                         //@ts-ignore
                         setSearchTerm(e.target.value)
                         //@ts-ignore
                         navigate(`../movies/search/${e.target.searchMovie.value}`)
+                    
                     }}>
 
                         <input type="search" name="searchMovie"  placeholder="Search for movies..." aria-label="Search through site content" 
