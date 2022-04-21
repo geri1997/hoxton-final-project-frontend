@@ -120,6 +120,11 @@ function App() {
                 <HomePage validateUser = {validateUser} />} 
             />
 
+            <Route path="/movies/search/:query/page/:page" element={
+                //@ts-ignore
+                <HomePage validateUser = {validateUser} />} 
+            />
+
             {
                 // #endregion
             }

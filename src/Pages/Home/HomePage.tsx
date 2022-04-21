@@ -29,7 +29,9 @@ export default function HomePage({validateUser}:any) {
 
 
     // #region "Getting movie count"
+
     const [moviesCount, setMoviesCount] = useState<any>()
+    const [moviesCountSearch, setMoviesCountSearch] = useState<any>()
 
     function getMovieCountFromServer(): void {
 
@@ -39,13 +41,14 @@ export default function HomePage({validateUser}:any) {
 
     }
 
-    if (params.query === undefined || params.query.length === 0) {
+    // if (params.query === undefined || params.query.length === 0) {
         useEffect(getMovieCountFromServer, [])
-    }
+    // }
 
-    else {
-        useEffect(getMovieCountFromServer, [])
-    }
+    // else {
+        // useEffect(getMovieCountFromServer, [])
+    // }
+
     // #endregion
 
 
@@ -55,7 +58,15 @@ export default function HomePage({validateUser}:any) {
     const [itemsPerPage, setItemsPerPage] = useState(20)
 
     let pagesVisited = pageNumber * itemsPerPage
-    const pageCount = Math.ceil(moviesCount?.count / itemsPerPage)
+    let pageCount
+
+    if (params.query) {
+        pageCount = Math.ceil(moviesCountSearch / itemsPerPage)
+    }
+
+    else {
+        pageCount = Math.ceil(moviesCount?.count / itemsPerPage)
+    }
 
     function handleChangingPageNumber(selected:any) {
         setPageNumber(selected)
@@ -63,14 +74,19 @@ export default function HomePage({validateUser}:any) {
     
     const changePage = ({ selected }:any) => {
 
-        if (params.sort === undefined) {
+        if ( params.sort === undefined && params.query === undefined ) {
             handleChangingPageNumber(selected)
             navigate(`../movies/page/${selected + 1}`)
         }
 
-        else {
+        else if ( params.sort && params.query === undefined ) {
             handleChangingPageNumber(selected)
             navigate(`../movies/sortBy/${params.sort}/page/${selected + 1}`)
+        }
+
+        else {
+            handleChangingPageNumber(selected)
+            navigate(`../movies/search/${params.query}/page/${selected + 1}`)
         }
 
     }
@@ -81,7 +97,6 @@ export default function HomePage({validateUser}:any) {
     // #region "Getting and movies stuff"
 
     const { movies, setMovies, latestMovies, setLatestMovies } = useStore()
-
 
     function getMoviesFromServer(): void {
 
@@ -106,16 +121,48 @@ export default function HomePage({validateUser}:any) {
         else if ( params.page === undefined && params.query && params.sort === undefined ) {
             
             fetch(`http://localhost:4000/search`, {
+
                 method: "POST",
+
                 headers: {
                     "content-type": "application/json"
                 },
+
                 body: JSON.stringify({
-                    title: params.query
+                    title: params.query,
+                    page: 1
                 })
+
             })
             .then(resp => resp.json())
-            .then(moviesFromServer => setMovies(moviesFromServer))
+            .then(data => {
+                setMovies(data.movies)
+                setMoviesCountSearch(data.count)
+            })
+
+        }
+
+        else if ( params.page && params.query && params.sort === undefined ) {
+            
+            fetch(`http://localhost:4000/search`, {
+
+                method: "POST",
+
+                headers: {
+                    "content-type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    title: params.query,
+                    page: params.page
+                })
+
+            })
+            .then(resp => resp.json())
+            .then(data => { 
+                setMovies(data.movies)
+                setMoviesCountSearch(data.count)
+            })
 
         }
 
@@ -152,6 +199,10 @@ export default function HomePage({validateUser}:any) {
         useEffect(getMoviesFromServer, [params.query])
     }
 
+    else if ( params.page && params.query && params.sort === undefined ) {
+        useEffect(getMoviesFromServer, [params.page])
+    }
+
     else if ( params.page === undefined && params.query === undefined && params.sort ) {
         useEffect(getMoviesFromServer, [params.sort])
     }
@@ -160,6 +211,7 @@ export default function HomePage({validateUser}:any) {
         useEffect(getMoviesFromServer, [params.page])
     }
 
+    // #region "Latest Movie fetching"
     function getLatestMoviesFromServer(): void {
 
         fetch(`http://localhost:4000/latest`)
@@ -169,6 +221,7 @@ export default function HomePage({validateUser}:any) {
     }
 
     useEffect(getLatestMoviesFromServer, [])
+    // #endregion
 
     // #endregion
 
@@ -267,15 +320,13 @@ export default function HomePage({validateUser}:any) {
 
                 <div className="home-ribbon-2">
 
-                    { 
+                    { params.query ? 
 
-                        ( params.query === undefined || params.query.length === 0 ) ? (
-                            <span className="movie-count-span">Total movies: {moviesCount?.count} </span>
-                        ): 
-                        
                         (
-                            <span className="movie-count-span">Total movies: {movies?.length} </span>
-                        ) 
+                            <span className="movie-count-span">Total movies: { moviesCountSearch } </span>
+                        ): (
+                            <span className="movie-count-span">Total movies: { moviesCount?.count } </span>
+                        )
 
                     }
 
@@ -290,9 +341,7 @@ export default function HomePage({validateUser}:any) {
                                 <ul className="list-sort">
 
                                     <Link to="/movies/sortBy/views" >Most viewed (Desc)</Link>
-
                                     <Link to="/movies/sortBy/ratingImdb" >Imdb rating (Desc)</Link>
-
                                     <Link to="/movies/sortBy/title" >Title (Desc)</Link>
 
                                 </ul>
@@ -315,10 +364,12 @@ export default function HomePage({validateUser}:any) {
                                 movies?.map(movie => 
                                     
                                     <div className="movie-item" key={movie.id} onClick={function (e) {
+
                                         e.stopPropagation()
                                         //@ts-ignore
                                         navigate(`../movies/${ movie.title.split('').map((char) => (char === ' ' ? '-' : char)).join('') }`)
                                         window.scrollTo(0,0)
+
                                     }}>
 
                                         <img src={movie.photoSrc} />
@@ -365,25 +416,17 @@ export default function HomePage({validateUser}:any) {
                         
                     }
 
-                    { 
-                    
-                        ( params.query === undefined || params.query.length === 0 ) ? (
-
-                            <ReactPaginate
-                                previousLabel={"< Previous"}
-                                nextLabel={"Next >"}
-                                pageCount={pageCount}
-                                onPageChange={changePage}
-                                containerClassName={"paginationBttns"}
-                                previousLinkClassName={"previousBttn"}
-                                nextLinkClassName={"nextBttn"}
-                                disabledClassName={"paginationDisabled"}
-                                activeClassName={"paginationActive"}
-                            />
-
-                        ): null 
-                        
-                    }
+                        <ReactPaginate
+                            previousLabel={"< Previous"}
+                            nextLabel={"Next >"}
+                            pageCount={pageCount}
+                            onPageChange={changePage}
+                            containerClassName={"paginationBttns"}
+                            previousLinkClassName={"previousBttn"}
+                            nextLinkClassName={"nextBttn"}
+                            disabledClassName={"paginationDisabled"}
+                            activeClassName={"paginationActive"}
+                        />
 
                 </div>
 
