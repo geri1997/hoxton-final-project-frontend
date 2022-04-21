@@ -158,6 +158,11 @@ function App() {
                 <ProfilePage validateUser = {validateUser} />} 
             />
 
+            <Route path="/profile/:tab" element={
+                //@ts-ignore
+                <ProfilePage validateUser = {validateUser} />} 
+            />
+
 
             <Route path="/login" element={
                 <LoginPage 

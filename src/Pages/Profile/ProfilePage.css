@@ -1,5 +1,5 @@
 section.container-profile-menus {
-    height: 100vh;
+    /* height: auto; */
     width: 100%;
 
     display: grid;
@@ -50,6 +50,7 @@ section.container-profile-menus .profile-info {
     display: grid;
     grid-template-rows: 0.1fr 0.9fr;
     grid-gap: 25px;
+    /* height: auto; */
 }
 
 .container-tabs .list-tabs {
@@ -90,10 +91,35 @@ section.container-profile-menus .profile-info {
     letter-spacing: 3px;
 }
 
+.favorite-movies {
+    display: grid;
+    grid-template-columns: repeat(5, 0.2fr);
+    place-items: center;
+    grid-gap: 15px;
+    place-content: center;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.movie-fav {
+    display: grid;
+    grid-template-rows: 250px 0.5fr 0.5fr;
+    grid-gap: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.movie-fav img {
+    height: 250px;
+    width: 200px;
+}
+
 .container-videos {
     display: grid;
     grid-template-columns: repeat(4, 0.25fr);
     grid-gap: 20px;
+    height: auto;
     place-items: center;
     padding-bottom: 80px;
 }
