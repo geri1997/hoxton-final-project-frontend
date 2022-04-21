@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import ReactLoading from 'react-loading';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import FooterCommon from '../../Components/Common/FooterCommon/FooterCommon';
 import HeaderCommon from '../../Components/Common/HeaderCommon/HeaderCommon';
 import { useStore } from '../../Zustand/store';
@@ -10,6 +10,8 @@ export default function ProfilePage({validateUser}:any) {
 
     // #region "state"
     const [tab, setTab] = useState<any>("home")
+    const navigate = useNavigate()
+    
     const { user, userItem, setUserItem, users } = useStore()
     // #endregion
 
@@ -48,15 +50,15 @@ export default function ProfilePage({validateUser}:any) {
     //     return <main>User not found not found</main>
     // }
 
-    // if(user === null) {
+    if(user === null || user?.userName === undefined) {
 
-    //     return (
-    //         <div className="loading-wrapper">
-    //             <ReactLoading type={"spin"} color={"#000"} height={200} width={100} className="loading" />
-    //         </div>
-    //     )
+        return (
+            <div className="loading-wrapper">
+                <ReactLoading type={"spin"} color={"#000"} height={200} width={100} className="loading" />
+            </div>
+        )
         
-    // }
+    }
 
     // #endregion
 
@@ -88,19 +90,21 @@ export default function ProfilePage({validateUser}:any) {
 
                     <ul className="list-tabs">
 
-                        <li className= {tab === "movies" ? "clicked": "videos-tab"} onClick={() => {
-                            setTab("movies")
+                        <li className= {params.tab === "favoriteMovies" ? "clicked": "videos-tab"} onClick={() => {
+                            // setTab("movies")
+                            navigate("/profile/favoriteMovies")
                         }}>Favorite Movies</li>
                         
-                        <li className= {tab === "about" ? "clicked": "about-tab"} onClick={() => {
-                            setTab("about")
+                        <li className= {params.tab === "aboutUs" ? "clicked": "about-tab"} onClick={() => {
+                            // setTab("about")
+                            navigate("/profile/aboutUs")
                         }}>About Channel</li>
 
                     </ul>
 
                     { 
 
-                        tab === "movies" ? (
+                        params.tab === "favoriteMovies" ? (
 
                             <>
                             
@@ -116,10 +120,16 @@ export default function ProfilePage({validateUser}:any) {
                                             //@ts-ignore
                                             user?.favMovies.map(movie => 
 
-                                                <li className='movie-fav'>
+                                                <li className='movie-fav' key={movie.id} onClick={function () {
+                                                    //@ts-ignore
+                                                    navigate(`../movies/${ movie.title.split('').map((char) => (char === ' ' ? '-' : char)).join('') }`)
+                                                    window.scroll(0, 0)
+                                                }}>
+                                                    
                                                     <img src={movie.photoSrc} />
-                                                    {movie.title}
-                                                    {movie.releaseYear}
+                                                    <span>Movie title: {movie.title}</span>
+                                                    <span>Release year: {movie.releaseYear}</span>
+                                                
                                                 </li>
                                         
                                             )
@@ -132,7 +142,7 @@ export default function ProfilePage({validateUser}:any) {
 
                             </>
 
-                        ): tab === "about" ? (
+                        ): params.tab === "aboutUs" ? (
 
                             <div className="container-about">
                                 {/* <span>{user?.description}</span> */}

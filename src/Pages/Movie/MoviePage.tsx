@@ -136,9 +136,12 @@ export default function MoviePage({ validateUser }: any) {
 
                                 <button className="button-favorite-add" onClick={function () {
                                     addToFavorites()
-                                    navigate("/profile")
+                                    navigate("/profile/favoriteMovies")
+                                    window.scrollTo(0, 0)
                                 }}>
+
                                     Add to favorites
+                                    
                                 </button>
 
                             </div>
