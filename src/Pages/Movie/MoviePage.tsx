@@ -16,7 +16,7 @@ export default function MoviePage({ validateUser }: any) {
     const params = useParams()
     const navigate = useNavigate()
 
-    const { movieItem, setMovieItem, latestMovies, setLatestMovies, setUser } = useStore()
+    const { movieItem, setMovieItem, latestMovies, setLatestMovies, setUser, user } = useStore()
     // #endregion
 
 
@@ -134,15 +134,25 @@ export default function MoviePage({ validateUser }: any) {
                                 
                                 </ul>
 
-                                <button className="button-favorite-add" onClick={function () {
-                                    addToFavorites()
-                                    navigate("/profile/favoriteMovies")
-                                    window.scrollTo(0, 0)
-                                }}>
+                                {
 
-                                    Add to favorites
+                                    user?.userName ? (
+
+                                        <button className="button-favorite-add" onClick={function () {
+                                            
+                                            addToFavorites()
+                                            navigate("/profile")
+                                            window.scrollTo(0, 0)
+
+                                        }}>
+
+                                            Add to favorites
                                     
-                                </button>
+                                        </button>
+
+                                    ): null 
+
+                                }
 
                             </div>
 
