@@ -1,166 +1,149 @@
-import create from 'zustand'
+import create from 'zustand';
 import { mountStoreDevtool } from 'simple-zustand-devtools';
-import AppStoreState from './types/interfaceStore'
+import AppStoreState from './types/interfaceStore';
 
-export const useStore = create<AppStoreState>((set, get): AppStoreState => ({
+export const useStore = create<AppStoreState>(
+    (set, get): AppStoreState => ({
+        // #region 'GeneralState'
+        users: [],
+        movies: [],
+        searchTerm: '',
+        user: null,
+        userItem: null,
+        genres: [],
+        movieItem: null,
+        comments: [],
+        favorites: [],
+        latestMovies: [],
 
-    // #region 'GeneralState'
-    users: [],
-    movies: [],
-    searchTerm: "",
-    user: null,
-    userItem: null,
-    genres: [],
-    movieItem: null,
-    comments: [],
-    favorites: [],
-    latestMovies: [],
+        setComments: (array) => {
+            set({ comments: array });
+        },
 
-    setComments: (array) => {
-        set({ comments: array })
-    },
+        setSearchTerm: (string) => {
+            set({ searchTerm: string });
+        },
 
-    setSearchTerm: (string) => {
-        set({ searchTerm: string })
-    },
+        setMovieItem: (data) => {
+            set({ movieItem: data });
+        },
 
-    setMovieItem: (data) => {
-        set({ movieItem: data })
-    },
+        setGenres: (genresFromServer) => {
+            set({ genres: genresFromServer });
+        },
 
-    setGenres: (genresFromServer) => {
-        set({ genres: genresFromServer })
-    },
+        setMovies: (moviesFromServer) => {
+            set({ movies: moviesFromServer });
+        },
 
-    setMovies: (moviesFromServer) => {
-        set({ movies: moviesFromServer })
-    },
+        setUser: (data) => {
+            set({ user: data });
+        },
 
-    setUser: (data) => {
-        set({ user: data })
-    },
+        setUserItem: (data) => {
+            set({ userItem: data });
+        },
 
-    setUserItem: (data) => {
-        set({ userItem: data })
-    },
+        setFavorites: (favoritesFromServer) => {
+            set({ favorites: favoritesFromServer });
+        },
 
-    setFavorites: (favoritesFromServer) => {
-        set({ favorites: favoritesFromServer })
-    },
+        setLatestMovies: (latestMoviesFromServer) => {
+            set({ latestMovies: latestMoviesFromServer });
+        },
+        // #endregion
 
-    setLatestMovies: (latestMoviesFromServer) => {
-        set({latestMovies: latestMoviesFromServer})
-    },
-    // #endregion
+        // #region 'Login State'
+        emailLogin: '',
+        passwordLogin: '',
 
+        handleEmailChangeLogin: (e) => {
+            set({ emailLogin: e.target.value });
+        },
 
-    // #region 'Login State'
-    emailLogin: "",
-    passwordLogin: "",
+        handlePasswordChangeLogin: (e) => {
+            set({ passwordLogin: e.target.value });
+        },
 
-    handleEmailChangeLogin: (e) => {
-        set({ emailLogin: e.target.value })
-    },
+        handleFormSubmitLogin: (e) => {
+            e.preventDefault();
 
-    handlePasswordChangeLogin: (e) => {
-        set({ passwordLogin: e.target.value })
-    },
+            const email = e.target.email.value;
+            const password = e.target.password.value;
 
-    handleFormSubmitLogin: (e) => {
+            const formData = {
+                email: email,
+                password: password,
+            };
 
-        e.preventDefault();
-
-        const email = e.target.email.value;
-        const password = e.target.password.value;
-
-        const formData = {
-            email: email,
-            password: password,
-        };
-
-        fetch("http://localhost:4000/login", {
-
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(formData),
-        })
-            .then((resp) => resp.json())
-            .then((data) => {
-
-                if (data.error) {
-                    alert(data.error);
-                }
-
-                else {
-                    // we managed to sign in!
-                    localStorage.setItem("token", data.token);
-                    set({ user: data.user });
-                    // navigate("/home");
-                }
-
-            });
-
-    },
-    // #endregion
-
-
-    // #region 'Register State'
-    userNameRegister: "",
-    emailRegister: "",
-    passwordRegister: "",
-
-    handleFormSubmitRegister: (e: any) => {
-
-        e.preventDefault()
-
-        const {
-            users, userNameRegister, emailRegister, passwordRegister
-        } = get()
-
-        const formData = {
-            userName: userNameRegister,
-            email: emailRegister,
-            password: passwordRegister
-        }
-
-        fetch('http://localhost:4000/sign-up', {
-
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
-        })
-            .then(resp => resp.json())
-            .then(data => {
-
-                if (data.error) {
-                    alert('Oops, something went wrong.')
-                }
-
-                else {
-                    // we managed to create our user!
-                    localStorage.setItem('token', data.token)
-                    set({ user: data.user })
-                }
-
+            fetch('https://petite-locrian-piper.glitch.me/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
             })
+                .then((resp) => resp.json())
+                .then((data) => {
+                    if (data.error) {
+                        alert(data.error);
+                    } else {
+                        // we managed to sign in!
+                        localStorage.setItem('token', data.token);
+                        set({ user: data.user });
+                        // navigate("/home");
+                    }
+                });
+        },
+        // #endregion
 
-    },
+        // #region 'Register State'
+        userNameRegister: '',
+        emailRegister: '',
+        passwordRegister: '',
 
-    handleUserNameRegister: (e: any) => {
-        set({ userNameRegister: e.target.value })
-    },
+        handleFormSubmitRegister: (e: any) => {
+            e.preventDefault();
 
-    handleEmailRegister: (e: any) => {
-        set({ emailRegister: e.target.value })
-    },
+            const { users, userNameRegister, emailRegister, passwordRegister } =
+                get();
 
-    handlePasswordChangeRegister: (e: any) => {
-        set({ passwordRegister: e.target.value })
-    },
-    //#endregion
+            const formData = {
+                userName: userNameRegister,
+                email: emailRegister,
+                password: passwordRegister,
+            };
 
-}))
+            fetch('https://petite-locrian-piper.glitch.me/sign-up', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            })
+                .then((resp) => resp.json())
+                .then((data) => {
+                    if (data.error) {
+                        alert('Oops, something went wrong.');
+                    } else {
+                        // we managed to create our user!
+                        localStorage.setItem('token', data.token);
+                        set({ user: data.user });
+                    }
+                });
+        },
+
+        handleUserNameRegister: (e: any) => {
+            set({ userNameRegister: e.target.value });
+        },
+
+        handleEmailRegister: (e: any) => {
+            set({ emailRegister: e.target.value });
+        },
+
+        handlePasswordChangeRegister: (e: any) => {
+            set({ passwordRegister: e.target.value });
+        },
+        //#endregion
+    })
+);

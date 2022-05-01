@@ -1,20 +1,20 @@
-import { useEffect, useState } from "react";
-import { Link, useNavigate, NavLink } from "react-router-dom";
-import { useStore } from "../../../Zustand/store";
+import { useEffect, useState } from 'react';
+import { Link, useNavigate, NavLink } from 'react-router-dom';
+import { useStore } from '../../../Zustand/store';
 import 'react-dropdown/style.css';
-import "./HeaderCommon.css"
+import './HeaderCommon.css';
 
 export default function HeaderCommon(this: any) {
-    
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
-    const { setUser, setSearchTerm, user, genres, setGenres, searchTerm } = useStore()
+    const { setUser, setSearchTerm, user, genres, setGenres, searchTerm } =
+        useStore();
 
     function handleLogOut(e: any) {
         e.preventDefault();
-        localStorage.removeItem("token");
+        localStorage.removeItem('token');
         setUser(null);
-        navigate("/login");
+        navigate('/login');
     }
 
     function redirectToProfile(user: any) {
@@ -22,184 +22,172 @@ export default function HeaderCommon(this: any) {
         navigate(`../profile`);
     }
 
-     // #region "DropDown and getting genres from server stuff"
-     function getGenresFromServer(): void {
-
-      fetch(`http://localhost:4000/genres`)
-      .then(resp => resp.json())
-      .then(genresFromServer => setGenres(genresFromServer))
-
+    // #region "DropDown and getting genres from server stuff"
+    function getGenresFromServer(): void {
+        fetch(`https://petite-locrian-piper.glitch.me/genres`)
+            .then((resp) => resp.json())
+            .then((genresFromServer) => setGenres(genresFromServer));
     }
 
-    useEffect(getGenresFromServer, [])
+    useEffect(getGenresFromServer, []);
 
-     const options: any = []
+    const options: any = [];
 
-     for (const genre of genres) {
-         options.push({value: genre.name, label: genre.name})
-     }
-     // #endregion
-    
+    for (const genre of genres) {
+        options.push({ value: genre.name, label: genre.name });
+    }
+    // #endregion
+
     return (
-
         <>
+            <header className='header'>
+                <div className='header-group-1'>
+                    <Link to='/movies'>MovieLand24</Link>
 
-            <header className="header">
-                        
-                <div className="header-group-1">
+                    <ul className='list-nav'>
+                        <div className='div-inside-li'>
+                            <img src='/assets/logos/ico_filma_blu.png' alt='' />
 
-                    <Link to="/movies">MovieLand24</Link>
-                    
-                    <ul className="list-nav">
-
-                        <div className="div-inside-li">
-
-                            <img src="/assets/logos/ico_filma_blu.png" alt="" />
-                            
-                            <NavLink to = "../movies" className="special-uppercase" >Movies</NavLink>
-
+                            <NavLink
+                                to='../movies'
+                                className='special-uppercase'
+                            >
+                                Movies
+                            </NavLink>
                         </div>
 
-                        <div className="div-inside-li-special">
+                        <div className='div-inside-li-special'>
+                            <div className='dropdown'>
+                                <div className='genre-drop'>
+                                    <img
+                                        src='/assets/logos/list_blu.png'
+                                        alt=''
+                                    />
 
-                            <div className="dropdown">
-
-                                <div className="genre-drop">
-
-                                    <img src="/assets/logos/list_blu.png" alt="" />
-                                    
-                                    <li className="special-uppercase" onClick={function (e) {
-                                        e.stopPropagation()
-                                        navigate("../genres")
-                                    }}>Genres</li>
-
+                                    <li
+                                        className='special-uppercase'
+                                        onClick={function (e) {
+                                            e.stopPropagation();
+                                            navigate('../genres');
+                                        }}
+                                    >
+                                        Genres
+                                    </li>
                                 </div>
-                    
-                                <div className="dropdown-content">
 
+                                <div className='dropdown-content'>
                                     <ul>
-                                        
                                         {
                                             //@ts-ignore
-                                            genres.map(genre => 
-
-                                                <li className = "special-list-drop" key={genre.id} onClick={function (e: any) {
-                                                    
-                                                    e.stopPropagation()
-                                                    navigate(`../genres/${genre.name}`)
-                                                
-                                                }}>{genre.name}</li>
-
-                                            )
-
+                                            genres.map((genre) => (
+                                                <li
+                                                    className='special-list-drop'
+                                                    key={genre.id}
+                                                    onClick={function (e: any) {
+                                                        e.stopPropagation();
+                                                        navigate(
+                                                            `../genres/${genre.name}`
+                                                        );
+                                                    }}
+                                                >
+                                                    {genre.name}
+                                                </li>
+                                            ))
                                         }
-
                                     </ul>
-
                                 </div>
-
                             </div>
-
                         </div>
 
-                        <div className="div-inside-li">
+                        <div className='div-inside-li'>
+                            <img src='/assets/logos/netflix-red.png' alt='' />
 
-                            <img src="/assets/logos/netflix-red.png" alt="" />
-                            
-                            <NavLink to ="../genres/NETFLIX" className="special-uppercase" >Netflix</NavLink>
-                            
+                            <NavLink
+                                to='../genres/NETFLIX'
+                                className='special-uppercase'
+                            >
+                                Netflix
+                            </NavLink>
                         </div>
-
                     </ul>
-
                 </div>
 
-                <div className="header-group-2">
-                    
-                    <form className="button-search" onSubmit={function (e) {
-                        
-                        e.preventDefault()
-                        //@ts-ignore
-                        setSearchTerm(e.target.value)
-                        //@ts-ignore
-                        navigate(`../movies/search/${e.target.searchMovie.value}`)
-                    
-                    }}>
+                <div className='header-group-2'>
+                    <form
+                        className='button-search'
+                        onSubmit={function (e) {
+                            e.preventDefault();
+                            //@ts-ignore
+                            setSearchTerm(e.target.value);
+                            //@ts-ignore
+                            navigate(
+                                `../movies/search/${e.target.searchMovie.value}`
+                            );
+                        }}
+                    >
+                        <input
+                            type='search'
+                            name='searchMovie'
+                            placeholder='Search for movies...'
+                            aria-label='Search through site content'
+                            onChange={function (e) {
+                                navigate(`../movies/search/${e.target.value}`);
 
-                        <input type="search" name="searchMovie"  placeholder="Search for movies..." aria-label="Search through site content" 
-                        onChange={function (e) {
+                                if (e.target.value.length > 0) {
+                                    setSearchTerm(e.target.value);
+                                    navigate(
+                                        `../movies/search/${e.target.value}`
+                                    );
+                                } else {
+                                    setSearchTerm(e.target.value);
+                                    navigate(`../movies/search/`);
+                                }
+                            }}
+                        />
 
-                            navigate(`../movies/search/${e.target.value}`)
-
-                            if (e.target.value.length > 0) {
-                                setSearchTerm(e.target.value)
-                                navigate(`../movies/search/${e.target.value}`)
-                            }
-
-                            else {
-                                setSearchTerm(e.target.value)
-                                navigate(`../movies/search/`)
-                            }
-                            
-                        }}/>
-
-                        <button type="submit">
-                            <i className="fa fa-search"></i>
+                        <button type='submit'>
+                            <i className='fa fa-search'></i>
                         </button>
-
                     </form>
 
-                    { user === null ? (
-
-                            <button className="button-login-header" onClick={function () {
-                              navigate("../login")
-                            }}>
-                                <i className="material-icons special-icon">account_circle</i>
-                                
-                                Sign In
-
-                            </button>
-
-                        ): (
-
-                            <div className="dropdown">
-
-                              <li
-                                className="dropbtn"
+                    {user === null ? (
+                        <button
+                            className='button-login-header'
+                            onClick={function () {
+                                navigate('../login');
+                            }}
+                        >
+                            <i className='material-icons special-icon'>
+                                account_circle
+                            </i>
+                            Sign In
+                        </button>
+                    ) : (
+                        <div className='dropdown'>
+                            <li
+                                className='dropbtn'
                                 onClick={function () {
                                     redirectToProfile(user);
                                 }}
-                              >
-
+                            >
                                 <img src={`/assets/avatars/blankavatar.jpg`} />
                                 {user.userName}
-                                
-                              </li>
-                    
-                              <div className="dropdown-content">
+                            </li>
 
+                            <div className='dropdown-content'>
                                 <button
-                                  className="log-out"
-                                  onClick={function (e) {
-                                    handleLogOut(e);
-                                  }}
+                                    className='log-out'
+                                    onClick={function (e) {
+                                        handleLogOut(e);
+                                    }}
                                 >
-                                  <span>Log Out</span>
-
+                                    <span>Log Out</span>
                                 </button>
-
-                              </div>
-
                             </div>
-
-                        )}
-
+                        </div>
+                    )}
                 </div>
-
             </header>
-
         </>
-
-    )
-
+    );
 }
